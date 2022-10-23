@@ -1,9 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using ProyectoCRM.Models;
 using System.Diagnostics;
 
+
+using Microsoft.AspNetCore.Authorization;
+
 namespace ProyectoCRM.Controllers
 {
+
+    [Authorize]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -13,10 +20,13 @@ namespace ProyectoCRM.Controllers
             _logger = logger;
         }
 
+
+
         public IActionResult Index()
         {
             return View();
         }
+
 
         public IActionResult Privacy()
         {

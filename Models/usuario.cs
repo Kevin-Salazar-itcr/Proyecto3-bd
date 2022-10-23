@@ -8,7 +8,7 @@
         public string apellido2 { get; set; }
         public string nombre_usuario { get; set; }
         public string clave { get; set; }
-        public Rol rol { get; set; }
+        public short rol { get; set; }
         public short  departamento { get; set; }
     }
 }

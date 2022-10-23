@@ -9,16 +9,20 @@ namespace ProyectoCRM.logica
 
         public usuario EncontrarUsuario (string usuario, string clave) 
         {
+            string patron = "adjany";
             usuario objeto = new usuario();
 
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true")) {
 
-                string query = "select cedula, nombre, apellido1, apellido2, nombre_usuario, clave, rol, departamento from usuario where nombre_usuario = @usuario and clave = @pclave ";
+             //   string query = "select cedula, nombre, apellido1, apellido2, nombre_usuario, clave, rol, departamento from usuario where nombre_usuario = @usuario and clave = @pclave ";
                 
-                SqlCommand cmd = new SqlCommand (query, conexion);
-                cmd.Parameters.AddWithValue("@usuario", usuario);
-                cmd.Parameters.AddWithValue("@pclave", clave);
-                cmd.CommandType = System.Data.CommandType.Text;
+
+                SqlCommand cmd = new SqlCommand ("validarUsuario", conexion);
+
+                cmd.Parameters.AddWithValue("@usario", usuario);
+                cmd.Parameters.AddWithValue("@clave", clave);
+                cmd.Parameters.AddWithValue("@patron", patron);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                 conexion.Open();
 
@@ -39,7 +43,7 @@ namespace ProyectoCRM.logica
 
                             clave = dr["clave"].ToString(),
 
-                            rol = (Rol)(short)dr["rol"],
+                            rol = (short)dr["rol"],
 
                             departamento = (short)dr["departamento"]
 

@@ -3,6 +3,10 @@ using ProyectoCRM.Models;
 using ProyectoCRM.logica;
 
 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+
 namespace ProyectoCRM.Controllers
 {
     public class AccesoController : Controller
@@ -13,22 +17,48 @@ namespace ProyectoCRM.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(string usuario, string clave)
+        public async Task<IActionResult> IndexAsync(string usuario, string clave)
         {
             usuario objeto = new log().EncontrarUsuario(usuario, clave);
 
             if (objeto.nombre != null)
             {
 
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, objeto.nombre),
+                    new Claim("username", objeto.nombre_usuario),
+                    new Claim(ClaimTypes.Role, objeto.rol.ToString())
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
 
 
                 return RedirectToAction("Index", "Home");
 
 
-                
             }
+
             return View();
 
         }
+
+
+        public async Task<IActionResult> Salir()
+        {
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+
+            return RedirectToAction("Index");
+
+        }
+        
     }
-}
+
+
+    }
+
