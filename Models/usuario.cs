@@ -1,14 +1,32 @@
-﻿namespace ProyectoCRM.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace ProyectoCRM.Models
 {
-    public class usuario
+    public partial class Usuario
     {
-        public string cedula { get; set; }
-        public string nombre { get; set; }
-        public string apellido1 { get; set; }
-        public string apellido2 { get; set; }
-        public string nombre_usuario { get; set; }
-        public string clave { get; set; }
-        public short rol { get; set; }
-        public short  departamento { get; set; }
+        public Usuario()
+        {
+            Clientes = new HashSet<Cliente>();
+            Contactos = new HashSet<Contacto>();
+            Cotizaciones = new HashSet<Cotizacione>();
+            Ejecucions = new HashSet<Ejecucion>();
+        }
+
+        public string Cedula { get; set; } = null!;
+        public string Nombre { get; set; } = null!;
+        public string Apellido1 { get; set; } = null!;
+        public string Apellido2 { get; set; } = null!;
+        public string NombreUsuario { get; set; } = null!;
+        public string Clave { get; set; } 
+        public short Rol { get; set; }
+        public short Departamento { get; set; }
+
+        public virtual Departamento ObjDepartamento { get; set; } = null!;
+        public virtual Rol ObjRol { get; set; } = null!;
+        public virtual ICollection<Cliente> Clientes { get; set; }
+        public virtual ICollection<Contacto> Contactos { get; set; }
+        public virtual ICollection<Cotizacione> Cotizaciones { get; set; }
+        public virtual ICollection<Ejecucion> Ejecucions { get; set; }
     }
 }

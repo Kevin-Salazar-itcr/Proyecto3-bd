@@ -1,7 +1,7 @@
 using System.Security.Policy;
 using Microsoft.AspNetCore.Authentication.Cookies;
-
-
+using Microsoft.EntityFrameworkCore;
+using ProyectoCRM.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +15,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         option.AccessDeniedPath = "/Home/Privacy";
     });
 
+
+builder.Services.AddDbContext<CRMContext>(options =>
+   options.UseSqlServer(builder.Configuration.GetConnectionString("conexion"))
+
+);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

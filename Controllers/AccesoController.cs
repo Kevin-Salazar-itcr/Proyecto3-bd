@@ -19,16 +19,16 @@ namespace ProyectoCRM.Controllers
         [HttpPost]
         public async Task<IActionResult> IndexAsync(string usuario, string clave)
         {
-            usuario objeto = new log().EncontrarUsuario(usuario, clave);
+            Usuario objeto = new log().EncontrarUsuario(usuario, clave);
 
-            if (objeto.nombre != null)
+            if (objeto.Nombre != null)
             {
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, objeto.nombre),
-                    new Claim("username", objeto.nombre_usuario),
-                    new Claim(ClaimTypes.Role, objeto.rol.ToString())
+                    new Claim(ClaimTypes.Name, objeto.Nombre),
+                    new Claim("username", objeto.NombreUsuario),
+                    new Claim(ClaimTypes.Role, objeto.Rol.ToString())
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

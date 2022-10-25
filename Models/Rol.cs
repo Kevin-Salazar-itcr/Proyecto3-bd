@@ -1,9 +1,18 @@
-﻿namespace ProyectoCRM.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace ProyectoCRM.Models
 {
-    public enum Rol
+    public partial class Rol
     {
-        Edicion = 1,
-        Visualizacion = 2,
-        Reporteria = 3
+        public Rol()
+        {
+            Usuarios = new HashSet<Usuario>();
+        }
+
+        public short Id { get; set; }
+        public string TipoRol { get; set; } = null!;
+
+        public virtual ICollection<Usuario> Usuarios { get; set; }
     }
 }

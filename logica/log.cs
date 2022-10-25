@@ -7,10 +7,10 @@ namespace ProyectoCRM.logica
     public class log
     {
 
-        public usuario EncontrarUsuario (string usuario, string clave) 
+        public Usuario EncontrarUsuario (string usuario, string clave) 
         {
             string patron = "adjany";
-            usuario objeto = new usuario();
+            Usuario objeto = new Usuario();
 
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true")) {
 
@@ -31,21 +31,21 @@ namespace ProyectoCRM.logica
 
                     while (dr.Read()) {
 
-                        objeto = new usuario()
+                        objeto = new Usuario()
                         {
 
 
-                            cedula = dr["cedula"].ToString(),
-                            nombre = dr["nombre"].ToString(),
-                            apellido1 = dr["apellido1"].ToString(),
-                            apellido2 = dr["apellido2"].ToString(),
-                            nombre_usuario = dr["nombre_usuario"].ToString(),
+                            Cedula = dr["cedula"].ToString(),
+                            Nombre = dr["nombre"].ToString(),
+                            Apellido1 = dr["apellido1"].ToString(),
+                            Apellido2 = dr["apellido2"].ToString(),
+                            NombreUsuario = dr["nombre_usuario"].ToString(),
 
-                            clave = dr["clave"].ToString(),
+                            Clave = dr["clave"].ToString(),
 
-                            rol = (short)dr["rol"],
+                            Rol = (short)dr["rol"],
 
-                            departamento = (short)dr["departamento"]
+                            Departamento = (short)dr["departamento"]
 
                         };
                     
