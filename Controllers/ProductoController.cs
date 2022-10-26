@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProyectoCRM.Models;
+using ProyectoCRM.Models.ViewModels;
 
 namespace ProyectoCRM.Controllers
 {
@@ -28,48 +29,35 @@ namespace ProyectoCRM.Controllers
             return View(await cRMContext.ToListAsync());
         }
 
-        // GET: Producto/Details/5
-        public async Task<IActionResult> Details(string id)
+
+
+
+        [HttpGet]
+        public IActionResult producto_detalle()
+
         {
-            if (id == null || _context.Productos == null)
+
+            ProductoVM OproductoVM = new ProductoVM()
             {
-                return NotFound();
-            }
 
-            var producto = await _context.Productos
-                .Include(p => p.ObjCodigoFamilia)
-                .FirstOrDefaultAsync(m => m.Codigo == id);
-            if (producto == null)
-            {
-                return NotFound();
-            }
+                ObjProducto = new Producto(),
+                ObjListaFamilia = _context.FamiliaProductos.Select(familia => new SelectListItem()
+                {
 
-            return View(producto);
+                    Text = familia.Nombre,
+                    Value = familia.Codigo.ToString()
+
+                }).ToList()
+
+
+            };
+
+            return View(OproductoVM);
+
         }
+        
+      
 
-        // GET: Producto/Create
-        public IActionResult Create()
-        {
-            ViewData["CodigoFamilia"] = new SelectList(_context.FamiliaProductos, "Codigo", "Codigo");
-            return View();
-        }
-
-        // POST: Producto/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Codigo,Nombre,Descripcion,Precio,Activo,CodigoFamilia")] Producto producto)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(producto);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CodigoFamilia"] = new SelectList(_context.FamiliaProductos, "Codigo", "Codigo", producto.CodigoFamilia);
-            return View(producto);
-        }
 
         // GET: Producto/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -122,44 +110,6 @@ namespace ProyectoCRM.Controllers
             }
             ViewData["CodigoFamilia"] = new SelectList(_context.FamiliaProductos, "Codigo", "Codigo", producto.CodigoFamilia);
             return View(producto);
-        }
-
-        // GET: Producto/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null || _context.Productos == null)
-            {
-                return NotFound();
-            }
-
-            var producto = await _context.Productos
-                .Include(p => p.ObjCodigoFamilia)
-                .FirstOrDefaultAsync(m => m.Codigo == id);
-            if (producto == null)
-            {
-                return NotFound();
-            }
-
-            return View(producto);
-        }
-
-        // POST: Producto/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            if (_context.Productos == null)
-            {
-                return Problem("Entity set 'CRMContext.Productos'  is null.");
-            }
-            var producto = await _context.Productos.FindAsync(id);
-            if (producto != null)
-            {
-                _context.Productos.Remove(producto);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool ProductoExists(string id)
