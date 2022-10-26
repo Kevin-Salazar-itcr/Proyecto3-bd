@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +34,7 @@ namespace ProyectoCRM.Controllers
 
 
         [HttpGet]
-        public IActionResult producto_detalle()
+        public IActionResult Create()
 
         {
 
@@ -55,8 +56,67 @@ namespace ProyectoCRM.Controllers
             return View(OproductoVM);
 
         }
-        
-      
+
+        [HttpPost]
+        public IActionResult Create(ProductoVM OproductoVM) {
+
+
+            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+            {
+                conexion.Open();
+
+
+                SqlCommand cmd = new SqlCommand("agregarProducto", conexion);
+
+
+                cmd.Parameters.AddWithValue("@codigo", OproductoVM.ObjProducto.Codigo);
+                cmd.Parameters.AddWithValue("@nombre", OproductoVM.ObjProducto.Nombre);
+                cmd.Parameters.AddWithValue("@descripcion", OproductoVM.ObjProducto.Descripcion);
+                cmd.Parameters.AddWithValue("@precio", OproductoVM.ObjProducto.Precio);
+                cmd.Parameters.AddWithValue("@activo", OproductoVM.ObjProducto.Activo);
+                cmd.Parameters.AddWithValue("@codigo_familia", OproductoVM.ObjProducto.CodigoFamilia);
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.ExecuteNonQuery();
+
+                
+
+                
+
+                return RedirectToAction("index", "Producto");
+
+
+
+
+
+            }
+        }
+
+
+
+
+
+        //{
+            //_context.Productos.Add(OproductoVM.ObjProducto);
+
+            //_context.SaveChanges();
+
+
+
+            //return RedirectToAction("index", "Home");
+
+        //}
+
+
+
+
+
+
+
+
+
+
+
 
 
         // GET: Producto/Edit/5
