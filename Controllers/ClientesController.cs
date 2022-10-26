@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProyectoCRM.Models;
+using ProyectoCRM.Models.ViewModels;
 
 namespace ProyectoCRM.Controllers
 {
@@ -21,7 +24,7 @@ namespace ProyectoCRM.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            var cRMContext = _context.Clientes.Include(c => c.AsesorNavigation).Include(c => c.IdmonedaNavigation).Include(c => c.IdzonaNavigation);
+            var cRMContext = _context.Clientes.Include(c => c.IdmonedaNavigation).Include(c => c.IdzonaNavigation);
             return View(await cRMContext.ToListAsync());
         }
 
@@ -34,7 +37,6 @@ namespace ProyectoCRM.Controllers
             }
 
             var cliente = await _context.Clientes
-                .Include(c => c.AsesorNavigation)
                 .Include(c => c.IdmonedaNavigation)
                 .Include(c => c.IdzonaNavigation)
                 .FirstOrDefaultAsync(m => m.NombreCuenta == id);
@@ -46,90 +48,60 @@ namespace ProyectoCRM.Controllers
             return View(cliente);
         }
 
-        // GET: Clientes/Create
+
+
+
+
+
+
+        [HttpGet]
         public IActionResult Create()
+
         {
+
+          
+            
+
             ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula");
-            ViewData["Idmoneda"] = new SelectList(_context.Moneda, "Id", "Id");
-            ViewData["Idzona"] = new SelectList(_context.ZonaSectors, "Id", "Id");
+            ViewData["Idmoneda"] = new SelectList(_context.Moneda, "Id", "NombreMoneda");
+            ViewData["Idzona"] = new SelectList(_context.ZonaSectors, "Id", "Zona");
             return View();
+
+
+
+
         }
 
-        // POST: Clientes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NombreCuenta,Celular,Telefono,Correo,Sitio,ContactoPrincipal,Asesor,Idzona,Idmoneda")] Cliente cliente)
+        public IActionResult Create([Bind("NombreCuenta,Celular,Telefono,Correo,Sitio,ContactoPrincipal,Asesor,Idzona,Idmoneda")] Cliente cliente)
         {
-            if (ModelState.IsValid)
+
+
+            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
             {
-                _context.Add(cliente);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                conexion.Open();
+
+
+                SqlCommand cmd = new SqlCommand("agregarCliente", conexion);
+
+
+                cmd.Parameters.AddWithValue("@nombre_cuenta", cliente.NombreCuenta);
+                cmd.Parameters.AddWithValue("@celular", cliente.Celular);
+                cmd.Parameters.AddWithValue("@telefono", cliente.Telefono);
+                cmd.Parameters.AddWithValue("@correo", cliente.Correo);
+                cmd.Parameters.AddWithValue("@sitio", cliente.Sitio);
+                cmd.Parameters.AddWithValue("@contactoP", cliente.ContactoPrincipal);
+                cmd.Parameters.AddWithValue("@asesor", User.Identity.Name.ToString());
+                cmd.Parameters.AddWithValue("@zona", cliente.Idzona);
+                cmd.Parameters.AddWithValue("@moneda", cliente.Idmoneda);
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.ExecuteNonQuery();
+                return RedirectToAction("index", "Home");
             }
-            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula", cliente.Asesor);
-            ViewData["Idmoneda"] = new SelectList(_context.Moneda, "Id", "Id", cliente.Idmoneda);
-            ViewData["Idzona"] = new SelectList(_context.ZonaSectors, "Id", "Id", cliente.Idzona);
-            return View(cliente);
         }
 
-        // GET: Clientes/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null || _context.Clientes == null)
-            {
-                return NotFound();
-            }
 
-            var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula", cliente.Asesor);
-            ViewData["Idmoneda"] = new SelectList(_context.Moneda, "Id", "Id", cliente.Idmoneda);
-            ViewData["Idzona"] = new SelectList(_context.ZonaSectors, "Id", "Id", cliente.Idzona);
-            return View(cliente);
-        }
-
-        // POST: Clientes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("NombreCuenta,Celular,Telefono,Correo,Sitio,ContactoPrincipal,Asesor,Idzona,Idmoneda")] Cliente cliente)
-        {
-            if (id != cliente.NombreCuenta)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(cliente);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClienteExists(cliente.NombreCuenta))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula", cliente.Asesor);
-            ViewData["Idmoneda"] = new SelectList(_context.Moneda, "Id", "Id", cliente.Idmoneda);
-            ViewData["Idzona"] = new SelectList(_context.ZonaSectors, "Id", "Id", cliente.Idzona);
-            return View(cliente);
-        }
 
         // GET: Clientes/Delete/5
         public async Task<IActionResult> Delete(string id)
@@ -140,7 +112,6 @@ namespace ProyectoCRM.Controllers
             }
 
             var cliente = await _context.Clientes
-                .Include(c => c.AsesorNavigation)
                 .Include(c => c.IdmonedaNavigation)
                 .Include(c => c.IdzonaNavigation)
                 .FirstOrDefaultAsync(m => m.NombreCuenta == id);

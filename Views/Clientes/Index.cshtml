@@ -4,74 +4,59 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Clientes</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Celular)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefono)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Correo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sitio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContactoPrincipal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AsesorNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdmonedaNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdzonaNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Celular)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sitio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactoPrincipal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AsesorNavigation.Cedula)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdmonedaNavigation.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdzonaNavigation.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.NombreCuenta">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.NombreCuenta">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.NombreCuenta">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<h1>Lista de clientes</h1>
+
+
+
+
+<div class="card">
+    <div class="card-body">
+        <a class="btn btn-success btn-sm" asp-action="Create" asp-controller="Clientes">Crear Nuevo</a>
+        <hr />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre de la cuenta</th>
+                    <th>Celular</th>
+                    <th>Telefono</th>
+                    <th>Correo</th>
+                    <th>Sitio web</th>
+                    <th>Contacto principal</th>
+                    <th>Asesor</th>
+                    <th>Zona</th>
+                    <th>Moneda</th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.NombreCuenta</td>
+                        <td>@item.Celular</td>
+                        <td>@item.Telefono</td>                
+                        <td>@item.Correo</td>
+                        <td>@item.Sitio</td>
+                        <td>@item.ContactoPrincipal</td>
+                        <td>@item.Asesor</td>
+                        <td>@item.IdzonaNavigation.Zona</td>
+                        <td>@item.IdmonedaNavigation.NombreMoneda</td>
+                        <td>
+
+                            <a class="btn btn-danger btn-sm " asp-action="Delete" asp-route-id="@item.NombreCuenta">Eliminar</a>
+                           
+                        </td>
+                    </tr>
+
+
+
+                }
+            </tbody>
+        </table>
+
+
+
+

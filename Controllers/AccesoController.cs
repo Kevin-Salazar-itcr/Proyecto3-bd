@@ -26,7 +26,7 @@ namespace ProyectoCRM.Controllers
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, objeto.Nombre),
+                    new Claim(ClaimTypes.Name, objeto.Cedula),
                     new Claim("username", objeto.NombreUsuario),
                     new Claim(ClaimTypes.Role, objeto.Rol.ToString())
                 };
