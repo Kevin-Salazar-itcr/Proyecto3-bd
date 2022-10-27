@@ -6,9 +6,6 @@
 
 <h1>Lista de productos</h1>
 
-
-
-
 <div class="card">
     <div class="card-body">
         <a class="btn btn-success btn-sm" asp-action="Create" asp-controller="Producto">Crear Nuevo</a>
@@ -44,15 +41,10 @@
                                         
                         <td>@item.ObjCodigoFamilia.Nombre</td>
                         <td>
-                            <a class="btn btn-primary btn-sm " asp-action="Edit" asp-route-id="@item.Codigo">Editar</a> 
-                           
+                            <a class="btn btn-primary btn-sm " asp-action="Edit" asp-route-id="@item.Codigo.ToString()">Editar</a> 
                         </td>
                     </tr>
-
-
 
                 }
             </tbody>
         </table>
-
-

@@ -92,35 +92,32 @@ namespace ProyectoCRM.Controllers
             }
         }
 
-        public IActionResult Edit(string codigo)
+      
 
+        // GET: Producto/Edit/5
+        public async Task<IActionResult> Edit(string id)
         {
-
-            ProductoVM OproductoVM = new ProductoVM()
+            if (id == null || _context.Productos == null)
             {
+                return NotFound();
+            }
 
-                ObjProducto = new Producto(),
-                ObjListaFamilia = _context.FamiliaProductos.Select(familia => new SelectListItem()
-                {
-
-                    Text = familia.Nombre,
-                    Value = familia.Codigo.ToString()
-
-                }).ToList()
-
-
-            };
-
-            OproductoVM.ObjProducto.Codigo = codigo;
-
-            return View(OproductoVM);
-
+            var producto = await _context.Productos.FindAsync(id);
+            if (producto == null)
+            {
+                return NotFound();
+            }
+            ViewData["CodigoFamilia"] = new SelectList(_context.FamiliaProductos, "Codigo", "Nombre", producto.CodigoFamilia);
+            return View(producto);
         }
 
+        // POST: Producto/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public IActionResult Edit(ProductoVM OproductoVM)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, [Bind("Codigo,Nombre,Descripcion,Precio,Activo,CodigoFamilia")] Producto producto)
         {
-
 
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
             {
@@ -130,12 +127,12 @@ namespace ProyectoCRM.Controllers
                 SqlCommand cmd = new SqlCommand("editarProducto", conexion);
 
 
-                cmd.Parameters.AddWithValue("@codigo", OproductoVM.ObjProducto.Codigo);
-                cmd.Parameters.AddWithValue("@nombre", OproductoVM.ObjProducto.Nombre);
-                cmd.Parameters.AddWithValue("@descripcion", OproductoVM.ObjProducto.Descripcion);
-                cmd.Parameters.AddWithValue("@precio", OproductoVM.ObjProducto.Precio);
-                cmd.Parameters.AddWithValue("@activo", OproductoVM.ObjProducto.Activo);
-                cmd.Parameters.AddWithValue("@codigo_familia", OproductoVM.ObjProducto.CodigoFamilia);
+                cmd.Parameters.AddWithValue("@codigo", producto.Codigo);
+                cmd.Parameters.AddWithValue("@nombre", producto.Nombre);
+                cmd.Parameters.AddWithValue("@descripcion", producto.Descripcion);
+                cmd.Parameters.AddWithValue("@precio", producto.Precio);
+                cmd.Parameters.AddWithValue("@activo", producto.Activo);
+                cmd.Parameters.AddWithValue("@familiaProducto", producto.CodigoFamilia);
 
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.ExecuteNonQuery();
@@ -151,20 +148,29 @@ namespace ProyectoCRM.Controllers
 
 
             }
+
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        private bool ProductoExists(string id)
+        {
+            return _context.Productos.Any(e => e.Codigo == id);
+        }
     }
 }
+
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
