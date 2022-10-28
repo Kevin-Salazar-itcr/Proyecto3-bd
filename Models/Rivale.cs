@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace ProyectoCRM.Models
 {
-    public partial class CotizacionDenegadum
+    public partial class Rivale
     {
-        public CotizacionDenegadum()
+        public Rivale()
         {
             Cotizaciones = new HashSet<Cotizacione>();
         }
 
         public string Id { get; set; } = null!;
-        public string? Razon { get; set; }
+        public string? Nombre { get; set; }
 
         public virtual ICollection<Cotizacione> Cotizaciones { get; set; }
     }

@@ -22,10 +22,11 @@
                     <th>Celular</th>
                     <th>Telefono</th>
                     <th>Correo</th>
-                    <th>Sitio web</th>
+                    <th>Sitio</th>
                     <th>Contacto principal</th>
                     <th>Asesor</th>
                     <th>Zona</th>
+                    <th>Sector</th>
                     <th>Moneda</th>
 
                     <th></th>
@@ -37,17 +38,19 @@
                     <tr>
                         <td>@item.NombreCuenta</td>
                         <td>@item.Celular</td>
-                        <td>@item.Telefono</td>                
+                        <td>@item.Telefono</td>
                         <td>@item.Correo</td>
                         <td>@item.Sitio</td>
                         <td>@item.ContactoPrincipal</td>
                         <td>@item.Asesor</td>
-                        <td>@item.IdzonaNavigation.Zona</td>
+                        <td>@item.IdzonaNavigation.Zona1</td>
+                        <td>@item.IdsectorNavigation.Sector1</td>
                         <td>@item.IdmonedaNavigation.NombreMoneda</td>
+                        
                         <td>
 
                             <a class="btn btn-danger btn-sm " asp-action="Delete" asp-route-id="@item.NombreCuenta">Eliminar</a>
-                           
+
                         </td>
                     </tr>
 
@@ -56,7 +59,4 @@
                 }
             </tbody>
         </table>
-
-
-
 

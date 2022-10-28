@@ -40,7 +40,10 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ContactoPrincipal)
-        </dd>s
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AsesorNavigation)
+        </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.AsesorNavigation.Cedula)
         </dd>
@@ -49,6 +52,12 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IdmonedaNavigation.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdsectorNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdsectorNavigation.Id)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IdzonaNavigation)

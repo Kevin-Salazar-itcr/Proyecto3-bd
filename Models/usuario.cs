@@ -7,10 +7,12 @@ namespace ProyectoCRM.Models
     {
         public Usuario()
         {
+            Actividads = new HashSet<Actividad>();
             Clientes = new HashSet<Cliente>();
             Contactos = new HashSet<Contacto>();
             Cotizaciones = new HashSet<Cotizacione>();
             Ejecucions = new HashSet<Ejecucion>();
+            Tareas = new HashSet<Tarea>();
         }
 
         public string Cedula { get; set; } = null!;
@@ -24,9 +26,11 @@ namespace ProyectoCRM.Models
 
         public virtual Departamento DepartamentoNavigation { get; set; } = null!;
         public virtual Rol RolNavigation { get; set; } = null!;
+        public virtual ICollection<Actividad> Actividads { get; set; }
         public virtual ICollection<Cliente> Clientes { get; set; }
         public virtual ICollection<Contacto> Contactos { get; set; }
         public virtual ICollection<Cotizacione> Cotizaciones { get; set; }
         public virtual ICollection<Ejecucion> Ejecucions { get; set; }
+        public virtual ICollection<Tarea> Tareas { get; set; }
     }
 }

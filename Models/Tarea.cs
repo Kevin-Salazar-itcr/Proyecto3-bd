@@ -13,10 +13,14 @@ namespace ProyectoCRM.Models
         }
 
         public short Id { get; set; }
-        public string Estado { get; set; } = null!;
         public DateTime FechaFinalizacion { get; set; }
-        public string Informacion { get; set; } = null!;
         public DateTime FechaCreacion { get; set; }
+        public string Informacion { get; set; } = null!;
+        public string Asesor { get; set; } = null!;
+        public short Estado { get; set; }
+
+        public virtual Usuario AsesorNavigation { get; set; } = null!;
+        public virtual Estado EstadoNavigation { get; set; } = null!;
 
         public virtual ICollection<Contacto> Contactos { get; set; }
         public virtual ICollection<Ejecucion> Ejecucions { get; set; }

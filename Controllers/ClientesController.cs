@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Security.Policy;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProyectoCRM.Models;
-using ProyectoCRM.Models.ViewModels;
 
 namespace ProyectoCRM.Controllers
 {
@@ -24,58 +22,28 @@ namespace ProyectoCRM.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            var cRMContext = _context.Clientes.Include(c => c.IdmonedaNavigation).Include(c => c.IdzonaNavigation);
+            var cRMContext = _context.Clientes.Include(c => c.AsesorNavigation).Include(c => c.IdmonedaNavigation).Include(c => c.IdsectorNavigation).Include(c => c.IdzonaNavigation);
             return View(await cRMContext.ToListAsync());
         }
 
-        // GET: Clientes/Details/5
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null || _context.Clientes == null)
-            {
-                return NotFound();
-            }
-
-            var cliente = await _context.Clientes
-                .Include(c => c.IdmonedaNavigation)
-                .Include(c => c.IdzonaNavigation)
-                .FirstOrDefaultAsync(m => m.NombreCuenta == id);
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-
-            return View(cliente);
-        }
-
-
-
-
-
-
-
-        [HttpGet]
+     
+        // GET: Clientes/Create
         public IActionResult Create()
-
         {
-
-          
-            
-
             ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula");
             ViewData["Idmoneda"] = new SelectList(_context.Moneda, "Id", "NombreMoneda");
-            ViewData["Idzona"] = new SelectList(_context.ZonaSectors, "Id", "Zona");
+            ViewData["Idsector"] = new SelectList(_context.Sectors, "Id", "Sector1");
+            ViewData["Idzona"] = new SelectList(_context.Zonas, "Id", "Zona1");
             return View();
-
-
-
-
         }
 
+        // POST: Clientes/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public IActionResult Create([Bind("NombreCuenta,Celular,Telefono,Correo,Sitio,ContactoPrincipal,Asesor,Idzona,Idmoneda")] Cliente cliente)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("NombreCuenta,Celular,Telefono,Correo,Sitio,ContactoPrincipal,Asesor,Idzona,Idsector,Idmoneda")] Cliente cliente)
         {
-
 
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
             {
@@ -93,17 +61,20 @@ namespace ProyectoCRM.Controllers
                 cmd.Parameters.AddWithValue("@contactoP", cliente.ContactoPrincipal);
                 cmd.Parameters.AddWithValue("@asesor", User.Identity.Name.ToString());
                 cmd.Parameters.AddWithValue("@zona", cliente.Idzona);
+                cmd.Parameters.AddWithValue("@sector", cliente.Idsector);
                 cmd.Parameters.AddWithValue("@moneda", cliente.Idmoneda);
 
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.ExecuteNonQuery();
                 return RedirectToAction("index", "Home");
             }
+
+
+
         }
 
 
-
-        // GET: Clientes/Delete/5
+   
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Clientes == null)
@@ -112,7 +83,9 @@ namespace ProyectoCRM.Controllers
             }
 
             var cliente = await _context.Clientes
+                .Include(c => c.AsesorNavigation)
                 .Include(c => c.IdmonedaNavigation)
+                .Include(c => c.IdsectorNavigation)
                 .Include(c => c.IdzonaNavigation)
                 .FirstOrDefaultAsync(m => m.NombreCuenta == id);
             if (cliente == null)
@@ -123,7 +96,8 @@ namespace ProyectoCRM.Controllers
             return View(cliente);
         }
 
-        // POST: Clientes/Delete/5
+    
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

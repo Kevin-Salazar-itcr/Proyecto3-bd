@@ -20,11 +20,13 @@ namespace ProyectoCRM.Models
         public string ContactoPrincipal { get; set; } = null!;
         public string Asesor { get; set; } = null!;
         public short Idzona { get; set; }
+        public short Idsector { get; set; }
         public short Idmoneda { get; set; }
 
         public virtual Usuario AsesorNavigation { get; set; } = null!;
         public virtual Monedum IdmonedaNavigation { get; set; } = null!;
-        public virtual ZonaSector IdzonaNavigation { get; set; } = null!;
+        public virtual Sector IdsectorNavigation { get; set; } = null!;
+        public virtual Zona IdzonaNavigation { get; set; } = null!;
         public virtual ICollection<Contacto> Contactos { get; set; }
         public virtual ICollection<Cotizacione> Cotizaciones { get; set; }
         public virtual ICollection<Ejecucion> Ejecucions { get; set; }
