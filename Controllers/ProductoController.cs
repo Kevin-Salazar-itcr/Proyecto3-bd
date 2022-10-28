@@ -26,7 +26,7 @@ namespace ProyectoCRM.Controllers
         
         public async Task<IActionResult> Index()
         {
-            var cRMContext = _context.Productos.Include(p => p.ObjCodigoFamilia);
+            var cRMContext = _context.Productos.Include(p => p.CodigoFamiliaNavigation);
             return View(await cRMContext.ToListAsync());
         }
 

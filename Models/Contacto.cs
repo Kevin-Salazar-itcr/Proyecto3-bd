@@ -12,6 +12,7 @@ namespace ProyectoCRM.Models
             Tareas = new HashSet<Tarea>();
         }
 
+        public short IdContacto { get; set; }
         public string Nombre { get; set; } = null!;
         public string Motivo { get; set; } = null!;
         public string Telefono { get; set; } = null!;

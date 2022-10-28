@@ -18,12 +18,12 @@ namespace ProyectoCRM.Models
         public string Apellido1 { get; set; } = null!;
         public string Apellido2 { get; set; } = null!;
         public string NombreUsuario { get; set; } = null!;
-        public string Clave { get; set; } 
+        public string Clave { get; set; } = null!;
         public short Rol { get; set; }
         public short Departamento { get; set; }
 
-        public virtual Departamento ObjDepartamento { get; set; } = null!;
-        public virtual Rol ObjRol { get; set; } = null!;
+        public virtual Departamento DepartamentoNavigation { get; set; } = null!;
+        public virtual Rol RolNavigation { get; set; } = null!;
         public virtual ICollection<Cliente> Clientes { get; set; }
         public virtual ICollection<Contacto> Contactos { get; set; }
         public virtual ICollection<Cotizacione> Cotizaciones { get; set; }

@@ -21,7 +21,7 @@ namespace ProyectoCRM.Models
         public string Descripcion { get; set; } = null!;
         public short Zona { get; set; }
         public short Moneda { get; set; }
-        public string ContactoAsociado { get; set; } = null!;
+        public short ContactoAsociado { get; set; }
         public string Asesor { get; set; } = null!;
         public string NombreCuenta { get; set; } = null!;
         public short Etapa { get; set; }
