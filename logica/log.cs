@@ -1,6 +1,7 @@
 ﻿using ProyectoCRM.Models;
 using System.Data.SqlClient;
 using System.Security.Cryptography.Xml;
+using System.Security.Policy;
 
 namespace ProyectoCRM.logica
 {
@@ -14,7 +15,6 @@ namespace ProyectoCRM.logica
 
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true")) {
 
-             //   string query = "select cedula, nombre, apellido1, apellido2, nombre_usuario, clave, rol, departamento from usuario where nombre_usuario = @usuario and clave = @pclave ";
                 
 
                 SqlCommand cmd = new SqlCommand ("validarUsuario", conexion);
@@ -62,7 +62,53 @@ namespace ProyectoCRM.logica
 
 
 
-      
+
+        public Contacto EncontrarContacto(short contacto)
+        {
+            
+            Contacto contact = new Contacto();
+
+            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+            {
+
+                SqlCommand cmd = new SqlCommand("validarContacto", conexion);
+
+                cmd.Parameters.AddWithValue("@contacto", contacto);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                conexion.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+
+                    while (dr.Read())
+                    {
+
+                        contact = new Contacto()
+                        {
+
+                            Zona = (short)dr["zona"],
+                            Asesor = dr["asesor"].ToString(),
+                            Cliente = dr["cliente"].ToString(),
+                            Sector = (short)dr["sector"],
+
+                        };
+
+                    }
+
+
+                    
+                }
+
+                return contact;
+
+
+            }
+
+
+        }
+
+
 
     }
 }

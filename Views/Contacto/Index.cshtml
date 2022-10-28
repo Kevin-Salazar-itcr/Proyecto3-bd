@@ -12,83 +12,79 @@
 <h1>Lista de contactos</h1>
 
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Motivo</th>
+            <th>Telefono</th>
+            <th>Correo</th>
+            <th>Direccion</th>
+            <th>Descripcion</th>
+            <th>Cliente</th>
+            <th>Zona</th>
+            <th>Sector</th>
+            <th>Asesor</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Tareas</th>
+            <th>Actividades</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.Contactos)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Motivo</td>
+                <td>@item.Telefono</td>
+                <td>@item.Correo</td>
+                <td>@item.Direccion</td>
+                <td>@item.Descripcion</td>
+                <td>@item.Cliente</td>
 
 
-<div class="card">
-    <div class="card-body">
-        <a class="btn btn-success btn-sm" asp-action="Create" asp-controller="Clientes">Crear Nuevo</a>
-        <hr />
-        <table class="table ">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Motivo</th>
-                    <th>Telefono</th>
-                    <th>Correo</th>
-                    <th>Direccion</th>
-                    <th>Descripcion</th>
-                    <th>Cliente</th>
-                    <th>Zona</th>
-                    <th>Sector</th>
-                    <th>Asesor</th>
-                    <th>Tipo</th>
-                    <th>Estado</th>
-                    <th>Tareas</th>
-                    <th>Actividades</th>
-
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Contactos)
-                {
-                    <tr>
-                        <td>@item.Nombre</td>
-                        <td>@item.Motivo</td>
-                        <td>@item.Telefono</td>
-                        <td>@item.Correo</td>
-                        <td>@item.Direccion</td>
-                        <td>@item.Descripcion</td>
-                        <td>@item.Cliente</td>
+                <td>@item.ZonaNavigation.Zona1      </td>
+                <td>@item.SectorNavigation.Sector1    </td>
+                <td>@item.AsesorNavigation.Nombre</td>
+                <td>@item.TipoContactoNavigation.Tipo</td>
+                <td>@item.EstadoNavigation.Estado1</td>
 
 
-                        <td>@item.Zona      </td>
-                        <td>@item.Sector    </td>
-                        <td>@item.Asesor</td>
-                        <td>@item.TipoContacto</td>
-                        <td>@item.Estado</td>
+                <td>
+                    @foreach (var tarea in item.Tareas)
+                    {
+                        @tarea.Informacion
 
+                        <br />
 
-                        <td>
-                            @foreach (var tarea in item.Tareas)
-                            {
-                                @tarea.Informacion
+                    }
+                </td>
+                <td>
+                    @foreach (var actividad in item.Actividads)
+                    {
 
-                                <br />
-                                
-                            }
-                        </td>
-                        <td>
-                            @foreach (var actividad in item.Actividads)
-                            {
+                        @actividad.Descripcion <br />
+                    }
+                </td>
 
-                                @actividad.Descripcion <br />
-                            }
-                        </td>
+                <td>
 
-                        <td>
+                    <a class="btn btn-sm   btn-primary" asp-action="Delete" asp-route-id="@item.IdContacto">Agregar tarea</a>
+                    <a class="btn btn-sm   btn-primary" asp-action="Delete" asp-route-id="@item.IdContacto">Agregar actividad</a>
 
-                            <a class="btn btn-sm   btn-primary" asp-action="Delete" asp-route-id="@item.IdContacto">Agregar tarea</a>
-                            <a class="btn btn-sm   btn-primary" asp-action="Delete" asp-route-id="@item.IdContacto">Agregar actividad</a>
-
-                        </td>
-                    </tr>
+                </td>
+            </tr>
 
 
 
-                }
-            </tbody>
-        </table>
+        }
+
+
+    </tbody>
+    </table>
+
 
      
 

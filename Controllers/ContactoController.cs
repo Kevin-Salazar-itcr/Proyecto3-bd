@@ -32,6 +32,11 @@ namespace ProyectoCRM.Controllers
 
                   .Include(i => i.Tareas)
                   .Include(i => i.Actividads)
+                  .Include(i => i.ZonaNavigation)
+                  .Include(i => i.SectorNavigation)
+                  .Include(i => i.AsesorNavigation)
+                  .Include(i => i.TipoContactoNavigation)
+                  .Include(i => i.EstadoNavigation)
                     
                         
 

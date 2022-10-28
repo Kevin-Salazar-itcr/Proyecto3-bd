@@ -1,0 +1,131 @@
+﻿@model IEnumerable<ProyectoCRM.Models.Cotizacione>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreOportunidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaCotizacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaCierra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrdenCompra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Factur)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AsesorNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactoAsociadoNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContraQuienNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EtapaNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MonedaNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreCuentaNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProbabilidadNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RazonDenegacionNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SectorNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ZonaNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreOportunidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaCotizacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaCierra)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrdenCompra)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Factur)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AsesorNavigation.Cedula)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactoAsociadoNavigation.IdContacto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContraQuienNavigation.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EtapaNavigation.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MonedaNavigation.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreCuentaNavigation.NombreCuenta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProbabilidadNavigation.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RazonDenegacionNavigation.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SectorNavigation.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoNavigation.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZonaNavigation.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.NumeroCotizacion">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.NumeroCotizacion">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.NumeroCotizacion">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
