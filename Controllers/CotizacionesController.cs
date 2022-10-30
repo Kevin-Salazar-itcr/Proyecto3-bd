@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProyectoCRM.Models;
 using ProyectoCRM.logica;
+using ProyectoCRM.Models.ViewModels;
 
 namespace ProyectoCRM.Controllers
 {
@@ -24,8 +25,25 @@ namespace ProyectoCRM.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var cRMContext = _context.Cotizaciones.Include(c => c.AsesorNavigation).Include(c => c.ContactoAsociadoNavigation).Include(c => c.ContraQuienNavigation).Include(c => c.EtapaNavigation).Include(c => c.MonedaNavigation).Include(c => c.NombreCuentaNavigation).Include(c => c.ProbabilidadNavigation).Include(c => c.RazonDenegacionNavigation).Include(c => c.SectorNavigation).Include(c => c.TipoNavigation).Include(c => c.ZonaNavigation);
-            return View(await cRMContext.ToListAsync());
+
+            var viewModel = new cotizacionesIndex();
+            viewModel.Cotizaciones = await _context.Cotizaciones
+
+                  .Include(i => i.ContactoAsociadoNavigation)
+                  .Include(i => i.AsesorNavigation)
+                  .Include(i => i.EtapaNavigation)
+                  .Include(i => i.AsesorNavigation)
+                  .Include(i => i.NombreCuentaNavigation)
+                  .Include(i => i.TipoNavigation)
+                  .Include(i => i.ProductosXcotizacions)
+
+
+
+                  .AsNoTracking()
+                  .ToListAsync();
+
+            return View(viewModel);
+
         }
 
         // GET: Cotizaciones/Details/5

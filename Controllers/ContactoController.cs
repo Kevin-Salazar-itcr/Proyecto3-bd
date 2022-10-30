@@ -52,7 +52,7 @@ namespace ProyectoCRM.Controllers
 
 
 
-        // GET: Contacto/Create
+        // GET: Contacto/Create/1
         public IActionResult Create()
         {
             ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula");

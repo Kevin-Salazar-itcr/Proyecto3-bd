@@ -1,4 +1,4 @@
-﻿@model ProyectoCRM.Models.Tarea
+﻿@model ProyectoCRM.Models.Actividad
 
 @{
     ViewData["Title"] = "Create";
@@ -6,40 +6,35 @@
 
 <h1>Create</h1>
 
-<h4>Tarea</h4>
+<h4>Actividad</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
                 <input asp-for="Id" class="form-control" />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FechaFinalizacion" class="control-label"></label>
-                <input asp-for="FechaFinalizacion" class="form-control" />
-                <span asp-validation-for="FechaFinalizacion" class="text-danger"></span>
+                <label asp-for="Descripcion" class="control-label"></label>
+                <input asp-for="Descripcion" class="form-control" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FechaCreacion" class="control-label"></label>
-                <input asp-for="FechaCreacion" class="form-control" />
-                <span asp-validation-for="FechaCreacion" class="text-danger"></span>
+                <label asp-for="FechaInicio" class="control-label"></label>
+                <input asp-for="FechaInicio" class="form-control" />
+                <span asp-validation-for="FechaInicio" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Informacion" class="control-label"></label>
-                <input asp-for="Informacion" class="form-control" />
-                <span asp-validation-for="Informacion" class="text-danger"></span>
+                <label asp-for="FechaFin" class="control-label"></label>
+                <input asp-for="FechaFin" class="form-control" />
+                <span asp-validation-for="FechaFin" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Asesor" class="control-label"></label>
                 <select asp-for="Asesor" class ="form-control" asp-items="ViewBag.Asesor"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <select asp-for="Estado" class ="form-control" asp-items="ViewBag.Estado"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
