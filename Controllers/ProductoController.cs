@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProyectoCRM.Models;
 using ProyectoCRM.Models.ViewModels;
+using ProyectoCRM.Procesos;
 
 namespace ProyectoCRM.Controllers
 {
@@ -23,11 +24,15 @@ namespace ProyectoCRM.Controllers
             _context = context;
         }
 
-        
-        public async Task<IActionResult> Index()
+
+        productosProcesos _ContactoDatos = new productosProcesos();
+
+        public IActionResult index1()
         {
-            var cRMContext = _context.Productos.Include(p => p.CodigoFamiliaNavigation);
-            return View(await cRMContext.ToListAsync());
+            //LA VISTA MOSTRARÁ UNA LISTA DE CONTACTOS
+            var oLista = _ContactoDatos.Listar();
+
+            return View(oLista);
         }
 
 
@@ -94,7 +99,6 @@ namespace ProyectoCRM.Controllers
 
       
 
-        // GET: Producto/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Productos == null)
@@ -111,12 +115,9 @@ namespace ProyectoCRM.Controllers
             return View(producto);
         }
 
-        // POST: Producto/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Codigo,Nombre,Descripcion,Precio,Activo,CodigoFamilia")] Producto producto)
+        public async Task<IActionResult> Edit(string id, Producto producto)
         {
 
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
@@ -141,7 +142,7 @@ namespace ProyectoCRM.Controllers
 
 
 
-                return RedirectToAction("index", "Producto");
+                return RedirectToAction("index1", "Producto");
 
 
 
@@ -151,10 +152,6 @@ namespace ProyectoCRM.Controllers
 
         }
 
-        private bool ProductoExists(string id)
-        {
-            return _context.Productos.Any(e => e.Codigo == id);
-        }
     }
 }
 

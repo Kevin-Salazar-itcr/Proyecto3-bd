@@ -29,6 +29,7 @@ namespace ProyectoCRM.Controllers
                     new Claim(ClaimTypes.Name, objeto.Cedula),
                     new Claim("username", objeto.NombreUsuario),
                     new Claim(ClaimTypes.Role, objeto.Rol.ToString())
+                    
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

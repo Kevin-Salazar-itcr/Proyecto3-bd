@@ -22,7 +22,6 @@ namespace ProyectoCRM.Controllers
             _context = context;
         }
 
-        // GET: Contacto
         public async Task<IActionResult> Index()
         {
 
@@ -37,9 +36,6 @@ namespace ProyectoCRM.Controllers
                   .Include(i => i.AsesorNavigation)
                   .Include(i => i.TipoContactoNavigation)
                   .Include(i => i.EstadoNavigation)
-                    
-                        
-
                   .AsNoTracking()
                   .ToListAsync();
 
@@ -47,12 +43,6 @@ namespace ProyectoCRM.Controllers
         }
 
 
-
-           
-
-
-
-        // GET: Contacto/Create/1
         public IActionResult Create()
         {
             ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula");
@@ -64,12 +54,10 @@ namespace ProyectoCRM.Controllers
             return View();
         }
 
-        // POST: Contacto/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdContacto,Nombre,Motivo,Telefono,Correo,Direccion,Descripcion,Cliente,Zona,Sector,Asesor,TipoContacto,Estado")] Contacto contacto)
+        public async Task<IActionResult> Create(Contacto contacto)
         {
 
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
@@ -101,114 +89,6 @@ namespace ProyectoCRM.Controllers
 
             }
         }
-
-        // GET: Contacto/Edit/5
-        public async Task<IActionResult> Edit(short? id)
-        {
-            if (id == null || _context.Contactos == null)
-            {
-                return NotFound();
-            }
-
-            var contacto = await _context.Contactos.FindAsync(id);
-            if (contacto == null)
-            {
-                return NotFound();
-            }
-            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula", contacto.Asesor);
-            ViewData["Cliente"] = new SelectList(_context.Clientes, "NombreCuenta", "NombreCuenta", contacto.Cliente);
-            ViewData["Estado"] = new SelectList(_context.Estados, "Id", "Id", contacto.Estado);
-            ViewData["Sector"] = new SelectList(_context.Sectors, "Id", "Id", contacto.Sector);
-            ViewData["TipoContacto"] = new SelectList(_context.TipoContactos, "Id", "Id", contacto.TipoContacto);
-            ViewData["Zona"] = new SelectList(_context.Zonas, "Id", "Id", contacto.Zona);
-            return View(contacto);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, [Bind("IdContacto,Nombre,Motivo,Telefono,Correo,Direccion,Descripcion,Cliente,Zona,Sector,Asesor,TipoContacto,Estado")] Contacto contacto)
-        {
-            if (id != contacto.IdContacto)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(contacto);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ContactoExists(contacto.IdContacto))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula", contacto.Asesor);
-            ViewData["Cliente"] = new SelectList(_context.Clientes, "NombreCuenta", "NombreCuenta", contacto.Cliente);
-            ViewData["Estado"] = new SelectList(_context.Estados, "Id", "Id", contacto.Estado);
-            ViewData["Sector"] = new SelectList(_context.Sectors, "Id", "Id", contacto.Sector);
-            ViewData["TipoContacto"] = new SelectList(_context.TipoContactos, "Id", "Id", contacto.TipoContacto);
-            ViewData["Zona"] = new SelectList(_context.Zonas, "Id", "Id", contacto.Zona);
-            return View(contacto);
-        }
-
-        // GET: Contacto/Delete/5
-        public async Task<IActionResult> Delete(short? id)
-        {
-            if (id == null || _context.Contactos == null)
-            {
-                return NotFound();
-            }
-
-            var contacto = await _context.Contactos
-                .Include(c => c.AsesorNavigation)
-                .Include(c => c.ClienteNavigation)
-                .Include(c => c.EstadoNavigation)
-                .Include(c => c.SectorNavigation)
-                .Include(c => c.TipoContactoNavigation)
-                .Include(c => c.ZonaNavigation)
-                .FirstOrDefaultAsync(m => m.IdContacto == id);
-            if (contacto == null)
-            {
-                return NotFound();
-            }
-
-            return View(contacto);
-        }
-
-        // POST: Contacto/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(short id)
-        {
-            if (_context.Contactos == null)
-            {
-                return Problem("Entity set 'CRMContext.Contactos'  is null.");
-            }
-            var contacto = await _context.Contactos.FindAsync(id);
-            if (contacto != null)
-            {
-                _context.Contactos.Remove(contacto);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ContactoExists(short id)
-        {
-          return _context.Contactos.Any(e => e.IdContacto == id);
-        }
+       
     }
 }

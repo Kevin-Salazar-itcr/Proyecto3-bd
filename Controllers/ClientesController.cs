@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProyectoCRM.Models;
+using ProyectoCRM.Procesos;
 
 namespace ProyectoCRM.Controllers
 {
@@ -19,15 +20,19 @@ namespace ProyectoCRM.Controllers
             _context = context;
         }
 
-        // GET: Clientes
-        public async Task<IActionResult> Index()
+        ClientesProcesos ClientesDatos = new ClientesProcesos();
+
+        public async Task<IActionResult> Index1()
         {
-            var cRMContext = _context.Clientes.Include(c => c.AsesorNavigation).Include(c => c.IdmonedaNavigation).Include(c => c.IdsectorNavigation).Include(c => c.IdzonaNavigation);
-            return View(await cRMContext.ToListAsync());
+            //LA VISTA MOSTRARÁ UNA LISTA DE CONTACTOS
+            var oLista = ClientesDatos.Listar();
+
+            return View(oLista);
+
         }
 
      
-        // GET: Clientes/Create
+      
         public IActionResult Create()
         {
             ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula");
@@ -37,9 +42,7 @@ namespace ProyectoCRM.Controllers
             return View();
         }
 
-        // POST: Clientes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("NombreCuenta,Celular,Telefono,Correo,Sitio,ContactoPrincipal,Asesor,Idzona,Idsector,Idmoneda")] Cliente cliente)

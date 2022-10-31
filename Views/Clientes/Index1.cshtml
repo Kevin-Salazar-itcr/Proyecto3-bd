@@ -1,0 +1,57 @@
+﻿@model List<ClienteLista>
+@{
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="card">
+    <div class="card-body">
+       
+        <hr />
+        <table class="table table-striped ">
+            <thead>
+                <tr>
+                    <th>Nombre de la cuenta</th>
+                    <th>Celular</th>
+                    <th>Telefono</th>
+                    <th>Correo</th>
+                    <th>Sitio</th>
+                    <th>Contacto principal</th>
+                    <th>Asesor</th>
+                    <th>Zona</th>
+                    <th>Sector</th>
+                    <th>Moneda</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.NombreCuenta</td>
+                        <td>@item.Celular</td>
+                        <td>@item.Telefono</td>
+                        <td>@item.Correo</td>
+                        <td>@item.Sitio</td>
+                        <td>@item.ContactoPrincipal</td>
+                        <td>@item.Asesor</td>
+                        <td>@item.Idzona</td>
+                        <td>@item.Idsector</td>
+                        <td>@item.Idmoneda</td>
+
+
+                        <td>
+
+                            <a class="btn btn-danger btn-sm " asp-action="Delete" asp-route-id="@item.NombreCuenta">Eliminar</a>
+
+                        </td>
+                    </tr>
+
+
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
