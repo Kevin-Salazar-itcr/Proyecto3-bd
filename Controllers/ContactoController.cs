@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ProyectoCRM.Controllers
 {
+    [Authorize]
     public class ContactoController : Controller
     {
         private readonly CRMContext _context;
@@ -60,35 +62,50 @@ namespace ProyectoCRM.Controllers
         public async Task<IActionResult> Create(Contacto contacto)
         {
 
-            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+
+            try
             {
-                conexion.Open();
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
+
+                    SqlCommand cmd = new SqlCommand("agregarContacto", conexion);
 
 
-                SqlCommand cmd = new SqlCommand("agregarContacto", conexion);
+                    cmd.Parameters.AddWithValue("@idContacto", contacto.IdContacto);
+                    cmd.Parameters.AddWithValue("@Nombre", contacto.Nombre);
+                    cmd.Parameters.AddWithValue("@motivo", contacto.Motivo);
+                    cmd.Parameters.AddWithValue("@telefono", contacto.Telefono);
+                    cmd.Parameters.AddWithValue("@correo", contacto.Correo);
+                    cmd.Parameters.AddWithValue("@direccion", contacto.Direccion);
+                    cmd.Parameters.AddWithValue("@descripcion", contacto.Descripcion);
+                    cmd.Parameters.AddWithValue("@cliente", contacto.Cliente);
+                    cmd.Parameters.AddWithValue("@zona", contacto.Zona);
+                    cmd.Parameters.AddWithValue("@sector", contacto.Sector);
+                    cmd.Parameters.AddWithValue("@asesor", contacto.Asesor);
+                    cmd.Parameters.AddWithValue("@tipoContacto", contacto.TipoContacto);
+                    cmd.Parameters.AddWithValue("@estado", contacto.Estado);
+
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
 
 
-                cmd.Parameters.AddWithValue("@idContacto", contacto.IdContacto);
-                cmd.Parameters.AddWithValue("@Nombre", contacto.Nombre);
-                cmd.Parameters.AddWithValue("@motivo", contacto.Motivo);
-                cmd.Parameters.AddWithValue("@telefono", contacto.Telefono);
-                cmd.Parameters.AddWithValue("@correo", contacto.Correo);
-                cmd.Parameters.AddWithValue("@direccion", contacto.Direccion);
-                cmd.Parameters.AddWithValue("@descripcion", contacto.Descripcion);
-                cmd.Parameters.AddWithValue("@cliente", contacto.Cliente);
-                cmd.Parameters.AddWithValue("@zona", contacto.Zona);
-                cmd.Parameters.AddWithValue("@sector", contacto.Sector);
-                cmd.Parameters.AddWithValue("@asesor", contacto.Asesor);
-                cmd.Parameters.AddWithValue("@tipoContacto", contacto.TipoContacto);
-                cmd.Parameters.AddWithValue("@estado", contacto.Estado);
+                }
+            }
+            catch (Exception e)
+            {
 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.ExecuteNonQuery();
-                return RedirectToAction("index", "Home");
+                string error = e.Message;
+                return RedirectToAction("Create", "Contacto");
+
+
+            }
+
+                return RedirectToAction("index", "Contacto");
 
 
             }
         }
        
     }
-}
+

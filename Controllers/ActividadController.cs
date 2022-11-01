@@ -4,13 +4,16 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProyectoCRM.Models;
+using ProyectoCRM.Models.ViewModels;
 
 namespace ProyectoCRM.Controllers
 {
+    [Authorize]
     public class ActividadController : Controller
     {
         private readonly CRMContext _context;
@@ -37,31 +40,47 @@ namespace ProyectoCRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Descripcion,FechaInicio,FechaFin,Asesor")] Actividad actividad)
+        public async Task<IActionResult> Create(Actividad actividad)
+
         {
-            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+
+            try
             {
-                conexion.Open();
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
 
 
-                SqlCommand cmd = new SqlCommand("agregarActividad", conexion);
+                    SqlCommand cmd = new SqlCommand("agregarActividad", conexion);
 
 
-                cmd.Parameters.AddWithValue("@idContacto", Globales.contacto);
-                cmd.Parameters.AddWithValue("@id", actividad.Id);
-                cmd.Parameters.AddWithValue("@descripcion", actividad.Descripcion);
-                cmd.Parameters.AddWithValue("@fechaIni", actividad.FechaInicio);
-                cmd.Parameters.AddWithValue("@fechaFin", actividad.FechaFin);
-                cmd.Parameters.AddWithValue("@asesor", actividad.Asesor);
+                    cmd.Parameters.AddWithValue("@idContacto", Globales.contacto);
+                    cmd.Parameters.AddWithValue("@id", actividad.Id);
+                    cmd.Parameters.AddWithValue("@descripcion", actividad.Descripcion);
+                    cmd.Parameters.AddWithValue("@fechaIni", actividad.FechaInicio);
+                    cmd.Parameters.AddWithValue("@fechaFin", actividad.FechaFin);
+                    cmd.Parameters.AddWithValue("@asesor", actividad.Asesor);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.ExecuteNonQuery();
 
-                return RedirectToAction("index", "Contacto");
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                string error = e.Message;
+                return RedirectToAction("Create", "Actividad");
 
 
             }
+            return RedirectToAction("index", "Contacto");
+
         }
+    
+
 
 
         public async Task<IActionResult> Edit(short? id)
@@ -83,30 +102,46 @@ namespace ProyectoCRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, [Bind("Id,Descripcion,FechaInicio,FechaFin,Asesor")] Actividad actividad)
+        public async Task<IActionResult> Edit(short id,  Actividad actividad)
         {
-            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+
+            try
             {
-                conexion.Open();
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
 
 
-                SqlCommand cmd = new SqlCommand("editarActividad", conexion);
+                    SqlCommand cmd = new SqlCommand("editarActividad", conexion);
 
 
-                cmd.Parameters.AddWithValue("@id", actividad.Id);
-                cmd.Parameters.AddWithValue("@fechaFin", actividad.FechaFin);
-                cmd.Parameters.AddWithValue("@asesor", actividad.Asesor);
+                    cmd.Parameters.AddWithValue("@id", actividad.Id);
+                    cmd.Parameters.AddWithValue("@fechaFin", actividad.FechaFin);
+                    cmd.Parameters.AddWithValue("@asesor", actividad.Asesor);
 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.ExecuteNonQuery();
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
 
-                return RedirectToAction("index", "Actividad");
+                    return RedirectToAction("index", "Actividad");
+
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                string error = e.Message;
+                return RedirectToAction("Create", "Actividad");
+
+
+            }
+
+            return RedirectToAction("index", "Actividad");
 
 
             }
         }
 
-
-
     }
-}
+

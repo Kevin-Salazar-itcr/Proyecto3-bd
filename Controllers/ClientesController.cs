@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using ProyectoCRM.Procesos;
 
 namespace ProyectoCRM.Controllers
 {
+    [Authorize]
     public class ClientesController : Controller
     {
         private readonly CRMContext _context;
@@ -47,34 +49,47 @@ namespace ProyectoCRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( Cliente cliente)
         {
-
-            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+            try
             {
-                conexion.Open();
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
+
+                    SqlCommand cmd = new SqlCommand("agregarCliente", conexion);
 
 
-                SqlCommand cmd = new SqlCommand("agregarCliente", conexion);
+                    cmd.Parameters.AddWithValue("@nombre_cuenta", cliente.NombreCuenta);
+                    cmd.Parameters.AddWithValue("@celular", cliente.Celular);
+                    cmd.Parameters.AddWithValue("@telefono", cliente.Telefono);
+                    cmd.Parameters.AddWithValue("@correo", cliente.Correo);
+                    cmd.Parameters.AddWithValue("@sitio", cliente.Sitio);
+                    cmd.Parameters.AddWithValue("@contactoP", cliente.ContactoPrincipal);
+                    cmd.Parameters.AddWithValue("@asesor", User.Identity.Name.ToString());
+                    cmd.Parameters.AddWithValue("@zona", cliente.Idzona);
+                    cmd.Parameters.AddWithValue("@sector", cliente.Idsector);
+                    cmd.Parameters.AddWithValue("@moneda", cliente.Idmoneda);
+
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
 
 
-                cmd.Parameters.AddWithValue("@nombre_cuenta", cliente.NombreCuenta);
-                cmd.Parameters.AddWithValue("@celular", cliente.Celular);
-                cmd.Parameters.AddWithValue("@telefono", cliente.Telefono);
-                cmd.Parameters.AddWithValue("@correo", cliente.Correo);
-                cmd.Parameters.AddWithValue("@sitio", cliente.Sitio);
-                cmd.Parameters.AddWithValue("@contactoP", cliente.ContactoPrincipal);
-                cmd.Parameters.AddWithValue("@asesor", User.Identity.Name.ToString());
-                cmd.Parameters.AddWithValue("@zona", cliente.Idzona);
-                cmd.Parameters.AddWithValue("@sector", cliente.Idsector);
-                cmd.Parameters.AddWithValue("@moneda", cliente.Idmoneda);
+                }
+            }
+            catch (Exception e)
+            {
 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.ExecuteNonQuery();
-                return RedirectToAction("index", "Home");
+                string error = e.Message;
+                return RedirectToAction("Create", "Cliente");
+
+
+            }
+
+                return RedirectToAction("index", "Cliente");
             }
 
 
 
-        }
+        
 
 
    
@@ -119,9 +134,5 @@ namespace ProyectoCRM.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClienteExists(string id)
-        {
-          return _context.Clientes.Any(e => e.NombreCuenta == id);
-        }
     }
 }

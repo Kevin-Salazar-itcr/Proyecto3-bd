@@ -10,9 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoCRM.Models;
 using ProyectoCRM.logica;
 using ProyectoCRM.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProyectoCRM.Controllers
 {
+    [Authorize]
     public class CotizacionesController : Controller
     {
         private readonly CRMContext _context;
@@ -100,40 +102,56 @@ namespace ProyectoCRM.Controllers
             Contacto objeto = new log().EncontrarContacto(cotizacione.ContactoAsociado);
 
 
-
-            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+            try
             {
-                conexion.Open();
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
 
 
-                SqlCommand cmd = new SqlCommand("agregarCotizacion", conexion);
+                    SqlCommand cmd = new SqlCommand("agregarCotizacion", conexion);
 
 
-                cmd.Parameters.AddWithValue("@numeroCot", cotizacione.NumeroCotizacion);
-                cmd.Parameters.AddWithValue("@nombreOpor", cotizacione.NombreOportunidad);
-                cmd.Parameters.AddWithValue("@fechaCot", cotizacione.FechaCotizacion);
-                cmd.Parameters.AddWithValue("@fechaCierre", cotizacione.FechaCierra);
-                cmd.Parameters.AddWithValue("@ordenCompra", cotizacione.OrdenCompra);
-                cmd.Parameters.AddWithValue("@descripcion", cotizacione.Descripcion);
-                cmd.Parameters.AddWithValue("@factura", cotizacione.Factur);
-                cmd.Parameters.AddWithValue("@zona", objeto.Zona);
-                cmd.Parameters.AddWithValue("@sector", objeto.Sector);
-                cmd.Parameters.AddWithValue("@moneda", cotizacione.Moneda);
-                cmd.Parameters.AddWithValue("@contactoAsociado", cotizacione.ContactoAsociado);
-                cmd.Parameters.AddWithValue("@asesor", objeto.Asesor);
-                cmd.Parameters.AddWithValue("@nombreCuenta", objeto.Cliente);
-                cmd.Parameters.AddWithValue("@etapa", cotizacione.Etapa);
-                cmd.Parameters.AddWithValue("@probabilidad", cotizacione.Probabilidad);
-                cmd.Parameters.AddWithValue("@tipo", cotizacione.Tipo);
-                cmd.Parameters.AddWithValue("@razon", cotizacione.RazonDenegacion);
-                cmd.Parameters.AddWithValue("@contraQuien", cotizacione.ContraQuien);
+                    cmd.Parameters.AddWithValue("@numeroCot", cotizacione.NumeroCotizacion);
+                    cmd.Parameters.AddWithValue("@nombreOpor", cotizacione.NombreOportunidad);
+                    cmd.Parameters.AddWithValue("@fechaCot", cotizacione.FechaCotizacion);
+                    cmd.Parameters.AddWithValue("@fechaCierre", cotizacione.FechaCierra);
+                    cmd.Parameters.AddWithValue("@ordenCompra", cotizacione.OrdenCompra);
+                    cmd.Parameters.AddWithValue("@descripcion", cotizacione.Descripcion);
+                    cmd.Parameters.AddWithValue("@factura", cotizacione.Factur);
+                    cmd.Parameters.AddWithValue("@zona", objeto.Zona);
+                    cmd.Parameters.AddWithValue("@sector", objeto.Sector);
+                    cmd.Parameters.AddWithValue("@moneda", cotizacione.Moneda);
+                    cmd.Parameters.AddWithValue("@contactoAsociado", cotizacione.ContactoAsociado);
+                    cmd.Parameters.AddWithValue("@asesor", objeto.Asesor);
+                    cmd.Parameters.AddWithValue("@nombreCuenta", objeto.Cliente);
+                    cmd.Parameters.AddWithValue("@etapa", cotizacione.Etapa);
+                    cmd.Parameters.AddWithValue("@probabilidad", cotizacione.Probabilidad);
+                    cmd.Parameters.AddWithValue("@tipo", cotizacione.Tipo);
+                    cmd.Parameters.AddWithValue("@razon", cotizacione.RazonDenegacion);
+                    cmd.Parameters.AddWithValue("@contraQuien", cotizacione.ContraQuien);
 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.ExecuteNonQuery();
-                return RedirectToAction("index", "Home");
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
+                  
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                string error = e.Message;
+                return RedirectToAction("Create", "Cotizaciones");
 
 
             }
+
+
+         return RedirectToAction("index", "Cotizaciones");
+
+
+            
         }
 
 
@@ -168,34 +186,53 @@ namespace ProyectoCRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, Cotizacione cotizacione)
         {
-            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+
+
+            try
             {
-                conexion.Open();
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
 
 
-                SqlCommand cmd = new SqlCommand("editarCotizacion", conexion);
+                    SqlCommand cmd = new SqlCommand("editarCotizacion", conexion);
 
 
-                cmd.Parameters.AddWithValue("@numeroCot", cotizacione.NumeroCotizacion);
-                cmd.Parameters.AddWithValue("@nombreOportunidad", cotizacione.NombreOportunidad);
-                cmd.Parameters.AddWithValue("@fechaCotizacion", cotizacione.FechaCotizacion);
-                cmd.Parameters.AddWithValue("@fechaCierre", cotizacione.FechaCierra);
-                cmd.Parameters.AddWithValue("@ordenCompra", cotizacione.OrdenCompra);
-                cmd.Parameters.AddWithValue("@descripcion", cotizacione.Descripcion);
-                cmd.Parameters.AddWithValue("@factura", cotizacione.Factur);
-                cmd.Parameters.AddWithValue("@moneda", cotizacione.Moneda);
-                cmd.Parameters.AddWithValue("@etapa", cotizacione.Etapa);
-                cmd.Parameters.AddWithValue("@probabilidad", cotizacione.Probabilidad);
-                cmd.Parameters.AddWithValue("@tipo", cotizacione.Tipo);
-                cmd.Parameters.AddWithValue("@razon", cotizacione.RazonDenegacion);
-                cmd.Parameters.AddWithValue("@contraQuien", cotizacione.ContraQuien);
+                    cmd.Parameters.AddWithValue("@numeroCot", cotizacione.NumeroCotizacion);
+                    cmd.Parameters.AddWithValue("@nombreOportunidad", cotizacione.NombreOportunidad);
+                    cmd.Parameters.AddWithValue("@fechaCotizacion", cotizacione.FechaCotizacion);
+                    cmd.Parameters.AddWithValue("@fechaCierre", cotizacione.FechaCierra);
+                    cmd.Parameters.AddWithValue("@ordenCompra", cotizacione.OrdenCompra);
+                    cmd.Parameters.AddWithValue("@descripcion", cotizacione.Descripcion);
+                    cmd.Parameters.AddWithValue("@factura", cotizacione.Factur);
+                    cmd.Parameters.AddWithValue("@moneda", cotizacione.Moneda);
+                    cmd.Parameters.AddWithValue("@etapa", cotizacione.Etapa);
+                    cmd.Parameters.AddWithValue("@probabilidad", cotizacione.Probabilidad);
+                    cmd.Parameters.AddWithValue("@tipo", cotizacione.Tipo);
+                    cmd.Parameters.AddWithValue("@razon", cotizacione.RazonDenegacion);
+                    cmd.Parameters.AddWithValue("@contraQuien", cotizacione.ContraQuien);
 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.ExecuteNonQuery();
-                return RedirectToAction("index", "Home");
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
+
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                string error = e.Message;
+                return RedirectToAction("Edit", "Cotizaciones");
 
 
             }
+
+
+         return RedirectToAction("index", "Cotizaciones");
+
+
+            
         }
     }
 }

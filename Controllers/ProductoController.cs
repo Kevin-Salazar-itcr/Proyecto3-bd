@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -65,36 +66,44 @@ namespace ProyectoCRM.Controllers
         [HttpPost]
         public IActionResult Create(ProductoVM OproductoVM) {
 
-
-            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+            try
             {
-                conexion.Open();
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
 
 
-                SqlCommand cmd = new SqlCommand("agregarProducto", conexion);
+                    SqlCommand cmd = new SqlCommand("agregarProducto", conexion);
 
 
-                cmd.Parameters.AddWithValue("@codigo", OproductoVM.ObjProducto.Codigo);
-                cmd.Parameters.AddWithValue("@nombre", OproductoVM.ObjProducto.Nombre);
-                cmd.Parameters.AddWithValue("@descripcion", OproductoVM.ObjProducto.Descripcion);
-                cmd.Parameters.AddWithValue("@precio", OproductoVM.ObjProducto.Precio);
-                cmd.Parameters.AddWithValue("@activo", OproductoVM.ObjProducto.Activo);
-                cmd.Parameters.AddWithValue("@codigo_familia", OproductoVM.ObjProducto.CodigoFamilia);
+                    cmd.Parameters.AddWithValue("@codigo", OproductoVM.ObjProducto.Codigo);
+                    cmd.Parameters.AddWithValue("@nombre", OproductoVM.ObjProducto.Nombre);
+                    cmd.Parameters.AddWithValue("@descripcion", OproductoVM.ObjProducto.Descripcion);
+                    cmd.Parameters.AddWithValue("@precio", OproductoVM.ObjProducto.Precio);
+                    cmd.Parameters.AddWithValue("@activo", OproductoVM.ObjProducto.Activo);
+                    cmd.Parameters.AddWithValue("@codigo_familia", OproductoVM.ObjProducto.CodigoFamilia);
 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.ExecuteNonQuery();
-
-                
-
-                
-
-                return RedirectToAction("index", "Producto");
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
 
 
 
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                string error = e.Message;
+                return RedirectToAction("Create", "Producto");
 
 
             }
+            return RedirectToAction("index", "Producto");
+
+
+
         }
 
       
@@ -119,41 +128,49 @@ namespace ProyectoCRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, Producto producto)
         {
-
-            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+            try
             {
-                conexion.Open();
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
 
 
-                SqlCommand cmd = new SqlCommand("editarProducto", conexion);
+                    SqlCommand cmd = new SqlCommand("editarProducto", conexion);
 
 
-                cmd.Parameters.AddWithValue("@codigo", producto.Codigo);
-                cmd.Parameters.AddWithValue("@nombre", producto.Nombre);
-                cmd.Parameters.AddWithValue("@descripcion", producto.Descripcion);
-                cmd.Parameters.AddWithValue("@precio", producto.Precio);
-                cmd.Parameters.AddWithValue("@activo", producto.Activo);
-                cmd.Parameters.AddWithValue("@familiaProducto", producto.CodigoFamilia);
+                    cmd.Parameters.AddWithValue("@codigo", producto.Codigo);
+                    cmd.Parameters.AddWithValue("@nombre", producto.Nombre);
+                    cmd.Parameters.AddWithValue("@descripcion", producto.Descripcion);
+                    cmd.Parameters.AddWithValue("@precio", producto.Precio);
+                    cmd.Parameters.AddWithValue("@activo", producto.Activo);
+                    cmd.Parameters.AddWithValue("@familiaProducto", producto.CodigoFamilia);
 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.ExecuteNonQuery();
-
-
-
-
-
-                return RedirectToAction("index", "Producto");
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
 
 
 
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                string error = e.Message;
+                return RedirectToAction("Edit", "Producto");
 
 
             }
 
+
+            return RedirectToAction("Index", "Producto");
+
+
+        }
+
         }
 
     }
-}
 
 
 

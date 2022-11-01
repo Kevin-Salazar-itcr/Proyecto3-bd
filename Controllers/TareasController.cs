@@ -10,9 +10,12 @@ using ProyectoCRM.Models;
 using ProyectoCRM.Models.ViewModels;
 using ProyectoCRM.Controllers;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProyectoCRM.Controllers
 {
+
+    [Authorize]
     public class TareasController : Controller
     {
 
@@ -67,30 +70,40 @@ namespace ProyectoCRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Tarea tarea)
         {
-
-            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+            try
             {
-                conexion.Open();
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
+                    SqlCommand cmd = new SqlCommand("agregarTarea", conexion);
 
 
-                SqlCommand cmd = new SqlCommand("agregarTarea", conexion);
+                    cmd.Parameters.AddWithValue("@idContacto", Globales.contacto);
+                    cmd.Parameters.AddWithValue("@id", tarea.Id);
+                    cmd.Parameters.AddWithValue("@estado", tarea.Estado);
+                    cmd.Parameters.AddWithValue("@fechaFinalizacion", tarea.FechaFinalizacion);
+                    cmd.Parameters.AddWithValue("@informacion", tarea.Informacion);
+                    cmd.Parameters.AddWithValue("@fechaCreacion", tarea.FechaCreacion);
+                    cmd.Parameters.AddWithValue("@asesor", tarea.Asesor);
+
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
 
 
-                cmd.Parameters.AddWithValue("@idContacto", Globales.contacto);
-                cmd.Parameters.AddWithValue("@id", tarea.Id);
-                cmd.Parameters.AddWithValue("@estado", tarea.Estado);
-                cmd.Parameters.AddWithValue("@fechaFinalizacion", tarea.FechaFinalizacion);
-                cmd.Parameters.AddWithValue("@informacion", tarea.Informacion);
-                cmd.Parameters.AddWithValue("@fechaCreacion", tarea.FechaCreacion);
-                cmd.Parameters.AddWithValue("@asesor", tarea.Asesor);
+                }
+            }
+            catch (Exception e)
+            {
 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.ExecuteNonQuery();
-
-                return RedirectToAction("index", "Contacto");
-
+                string error = e.Message;
+                return RedirectToAction("Create", "Tareas");
 
             }
+
+
+
+
+         return RedirectToAction("index", "Tareas");
 
         }
 
@@ -116,31 +129,33 @@ namespace ProyectoCRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(short id, Tarea tarea)
         {
-
-
-            using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+            try
             {
-                conexion.Open();
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
+                    SqlCommand cmd = new SqlCommand("editarTarea", conexion);
 
 
-                SqlCommand cmd = new SqlCommand("editarTarea", conexion);
+                    cmd.Parameters.AddWithValue("@id", tarea.Id);
+                    cmd.Parameters.AddWithValue("@estado", tarea.Estado);
+                    cmd.Parameters.AddWithValue("@fechafin", tarea.FechaFinalizacion);
+                    cmd.Parameters.AddWithValue("@asesor", tarea.Asesor);
+
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
 
 
-                cmd.Parameters.AddWithValue("@id", tarea.Id);
-                cmd.Parameters.AddWithValue("@estado", tarea.Estado);
-                cmd.Parameters.AddWithValue("@fechafin", tarea.FechaFinalizacion);
-                cmd.Parameters.AddWithValue("@asesor", tarea.Asesor);
+                }
+            }
+            catch (Exception e)
+            {
 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.ExecuteNonQuery();
-
-                return RedirectToAction("index", "Tareas");
-
-
-
+                string error = e.Message;
+                return RedirectToAction("Edit", "Tareas");
 
             }
-
+        return RedirectToAction("index", "Tareas");
         }
     }
 }

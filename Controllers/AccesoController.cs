@@ -19,26 +19,42 @@ namespace ProyectoCRM.Controllers
         [HttpPost]
         public async Task<IActionResult> IndexAsync(string usuario, string clave)
         {
-            Usuario objeto = new log().EncontrarUsuario(usuario, clave);
 
-            if (objeto.Nombre != null)
+
+            try
             {
+                Usuario objeto = new log().EncontrarUsuario(usuario, clave);
 
-                var claims = new List<Claim>
+                if (objeto.Nombre != null)
+                {
+
+                    var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, objeto.Cedula),
                     new Claim("username", objeto.NombreUsuario),
                     new Claim(ClaimTypes.Role, objeto.Rol.ToString())
-                    
+
                 };
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
 
 
-                return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
+
+
+
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                string error = e.Message;
+                return RedirectToAction("Edit", "Producto");
 
 
             }
