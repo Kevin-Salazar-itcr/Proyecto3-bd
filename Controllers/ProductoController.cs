@@ -27,7 +27,7 @@ namespace ProyectoCRM.Controllers
 
         productosProcesos _ContactoDatos = new productosProcesos();
 
-        public IActionResult index1()
+        public IActionResult index()
         {
             //LA VISTA MOSTRARÁ UNA LISTA DE CONTACTOS
             var oLista = _ContactoDatos.Listar();
@@ -142,7 +142,7 @@ namespace ProyectoCRM.Controllers
 
 
 
-                return RedirectToAction("index1", "Producto");
+                return RedirectToAction("index", "Producto");
 
 
 

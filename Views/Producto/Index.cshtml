@@ -1,24 +1,23 @@
-﻿@model IEnumerable<ProyectoCRM.Models.Producto>
-
+﻿@model List<Producto>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Lista de productos</h1>
 
-<div class="card">
-    <div class="card-body">
-        <a class="btn btn-success btn-sm" asp-action="Create" asp-controller="Producto">Crear Nuevo</a>
-        <hr />
-        <table class="table table-striped">
+
+        <H1>Productos</H1>
+ 
+        
+        
+        <table class="table table-striped ">
             <thead>
                 <tr>
                     <th>Nombre</th>
                     <th>Descripcion</th>
                     <th>Precio</th>
+                    <th>Familia</th>
                     <th>Estado</th>
-                    <th>Familia de producto</th>
-
                     <th></th>
                 </tr>
             </thead>
@@ -29,7 +28,7 @@
                         <td>@item.Nombre</td>
                         <td>@item.Descripcion</td>
                         <td>@item.Precio</td>
-
+                        <td>@item.CodigoFamilia</td>
                         @if (item.Activo == 1)
                         {
                             <td> Activo </td>
@@ -38,13 +37,18 @@
                         {
                             <td> Inactivo </td>
                         }
-                                        
-                        <td>@item.CodigoFamiliaNavigation.Nombre</td>
+
+
+
+
                         <td>
-                            <a class="btn btn-primary btn-sm " asp-action="Edit" asp-route-id="@item.Codigo.ToString()">Editar</a> 
+                            <a class="btn btn-primary btn-sm " asp-action="Edit" asp-route-id="@item.Codigo.ToString()">Editar</a>
                         </td>
                     </tr>
 
                 }
             </tbody>
         </table>
+
+   
+

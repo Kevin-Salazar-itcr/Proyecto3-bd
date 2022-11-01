@@ -20,7 +20,6 @@ namespace ProyectoCRM.Controllers
             _context = context;
         }
 
-        // GET: ProductosCotizacion
         public async Task<IActionResult> Index()
         {
             var cRMContext = _context.ProductosXcotizacions.Include(p => p.CodigoProductoNavigation).Include(p => p.NumeroCotizacionNavigation);
@@ -28,7 +27,6 @@ namespace ProyectoCRM.Controllers
         }
 
 
-        // GET: ProductosCotizacion/Create
         public IActionResult Create()
         {
             ViewData["CodigoProducto"] = new SelectList(_context.Productos, "Codigo", "Nombre");
@@ -36,12 +34,10 @@ namespace ProyectoCRM.Controllers
             return View();
         }
 
-        // POST: ProductosCotizacion/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodigoProducto,NumeroCotizacion,Cantidad,PrecioNegociado")] ProductosXcotizacion productosXcotizacion)
+        public async Task<IActionResult> Create(ProductosXcotizacion productosXcotizacion)
         {
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
             {

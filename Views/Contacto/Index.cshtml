@@ -9,10 +9,7 @@
 
 <h1>Contactos</h1>
 
-<h1>Lista de contactos</h1>
-
-
-<table class="table">
+<table class="table table-striped ">
     <thead>
         <tr>
             <th>Nombre</th>
@@ -29,6 +26,7 @@
             <th>Estado</th>
             <th>Tareas</th>
             <th>Actividades</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -55,9 +53,9 @@
                 <td>
                     @foreach (var tarea in item.Tareas)
                     {
-                        @tarea.Informacion
+                        @tarea.Informacion <hr>
 
-                        <br />
+                        
 
                     }
                 </td>
@@ -65,14 +63,15 @@
                     @foreach (var actividad in item.Actividads)
                     {
 
-                        @actividad.Descripcion <br />
+                        @actividad.Descripcion <hr>
+                        
                     }
                 </td>
 
                 <td>
 
                     <a class="btn btn-sm   btn-primary" asp-controller="Tareas" asp-action="Create" asp-route-id="@item.IdContacto">Agregar tarea</a>
-                    <a class="btn btn-sm   btn-primary" asp-action="Delete" asp-route-id="@item.IdContacto">Agregar actividad</a>
+                    <a class="btn btn-sm   btn-primary" asp-controller="Actividad" asp-action="Create" asp-route-id="@item.IdContacto">Agregar actividad</a>
 
                 </td>
             </tr>

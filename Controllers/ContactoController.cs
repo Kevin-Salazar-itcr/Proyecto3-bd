@@ -45,12 +45,12 @@ namespace ProyectoCRM.Controllers
 
         public IActionResult Create()
         {
-            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula");
+            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Nombre");
             ViewData["Cliente"] = new SelectList(_context.Clientes, "NombreCuenta", "NombreCuenta");
-            ViewData["Estado"] = new SelectList(_context.Estados, "Id", "Id");
-            ViewData["Sector"] = new SelectList(_context.Sectors, "Id", "Id");
-            ViewData["TipoContacto"] = new SelectList(_context.TipoContactos, "Id", "Id");
-            ViewData["Zona"] = new SelectList(_context.Zonas, "Id", "Id");
+            ViewData["Estado"] = new SelectList(_context.Estados, "Id", "Estado1");
+            ViewData["Sector"] = new SelectList(_context.Sectors, "Id", "Sector1");
+            ViewData["TipoContacto"] = new SelectList(_context.TipoContactos, "Id", "Tipo");
+            ViewData["Zona"] = new SelectList(_context.Zonas, "Id", "Zona1");
             return View();
         }
 

@@ -17,8 +17,6 @@ namespace ProyectoCRM.Controllers
     {
 
 
-        short CONTACTO = 0;
-
         private readonly CRMContext _context;
 
         public TareasController(CRMContext context)
@@ -26,14 +24,14 @@ namespace ProyectoCRM.Controllers
             _context = context;
         }
 
-        // GET: Tareas
+   
         public async Task<IActionResult> Index()
         {
             var cRMContext = _context.Tareas.Include(t => t.AsesorNavigation).Include(t => t.EstadoNavigation);
             return View(await cRMContext.ToListAsync());
         }
 
-        // GET: Tareas/Details/5
+       
         public async Task<IActionResult> Details(short? id)
         {
             if (id == null || _context.Tareas == null)
@@ -67,7 +65,7 @@ namespace ProyectoCRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FechaFinalizacion,FechaCreacion,Informacion,Asesor,Estado")] Tarea tarea)
+        public async Task<IActionResult> Create(Tarea tarea)
         {
 
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
@@ -96,7 +94,7 @@ namespace ProyectoCRM.Controllers
 
         }
 
-        // GET: Tareas/Edit/5
+    
         public async Task<IActionResult> Edit(short? id)
         {
             if (id == null || _context.Tareas == null)
@@ -110,13 +108,13 @@ namespace ProyectoCRM.Controllers
                 return NotFound();
             }
             ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula", tarea.Asesor);
-            ViewData["Estado"] = new SelectList(_context.Estados, "Id", "Id", tarea.Estado);
+            ViewData["Estado"] = new SelectList(_context.Estados, "Id", "Estado1", tarea.Estado);
             return View(tarea);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, [Bind("Id,FechaFinalizacion,FechaCreacion,Informacion,Asesor,Estado")] Tarea tarea)
+        public async Task<IActionResult> Edit(short id, Tarea tarea)
         {
 
 

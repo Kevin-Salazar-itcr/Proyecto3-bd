@@ -31,7 +31,7 @@ namespace ProyectoCRM.Controllers
         {
 
             Globales.contacto = (short)id;
-            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula");
+            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Nombre");
             return View();
         }
 

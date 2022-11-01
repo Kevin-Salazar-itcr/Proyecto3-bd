@@ -46,7 +46,7 @@ namespace ProyectoCRM.Controllers
 
         }
 
-        // GET: Cotizaciones/Details/5
+
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Cotizaciones == null)
@@ -78,22 +78,22 @@ namespace ProyectoCRM.Controllers
 
         public IActionResult Create()
         {
-            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula");
-            ViewData["ContactoAsociado"] = new SelectList(_context.Contactos, "IdContacto", "IdContacto");
-            ViewData["ContraQuien"] = new SelectList(_context.Rivales, "Id", "Id");
-            ViewData["Etapa"] = new SelectList(_context.Etapas, "Id", "Id");
+            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Nombre");
+            ViewData["ContactoAsociado"] = new SelectList(_context.Contactos, "IdContacto", "Nombre");
+            ViewData["ContraQuien"] = new SelectList(_context.Rivales, "Id", "Nombre");
+            ViewData["Etapa"] = new SelectList(_context.Etapas, "Id", "Etapa1");
             ViewData["NombreCuenta"] = new SelectList(_context.Clientes, "NombreCuenta", "NombreCuenta");
-            ViewData["Probabilidad"] = new SelectList(_context.Probabilidads, "Id", "Id");
-            ViewData["Moneda"] = new SelectList(_context.Moneda, "Id", "Id");
-            ViewData["RazonDenegacion"] = new SelectList(_context.CotizacionDenegada, "Id", "Id");
-            ViewData["Tipo"] = new SelectList(_context.TipoCotizacions, "Id", "Id");
+            ViewData["Probabilidad"] = new SelectList(_context.Probabilidads, "Id", "Etapa");
+            ViewData["Moneda"] = new SelectList(_context.Moneda, "Id", "NombreMoneda");
+            ViewData["RazonDenegacion"] = new SelectList(_context.CotizacionDenegada, "Id", "Razon");
+            ViewData["Tipo"] = new SelectList(_context.TipoCotizacions, "Id", "Tipo");
             return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NumeroCotizacion,NombreOportunidad,FechaCotizacion,FechaCierra,OrdenCompra,Descripcion,Factur,Zona,Sector,Moneda,ContactoAsociado,Asesor,NombreCuenta,Etapa,Probabilidad,Tipo,RazonDenegacion,ContraQuien")] Cotizacione cotizacione)
+        public async Task<IActionResult> Create(Cotizacione cotizacione)
         {
 
             //UtiliZamos la funcion de encontrar contacto
@@ -138,7 +138,6 @@ namespace ProyectoCRM.Controllers
 
 
 
-        // GET: Cotizaciones/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Cotizaciones == null)
@@ -151,26 +150,23 @@ namespace ProyectoCRM.Controllers
             {
                 return NotFound();
             }
-            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula", cotizacione.Asesor);
-            ViewData["ContactoAsociado"] = new SelectList(_context.Contactos, "IdContacto", "IdContacto", cotizacione.ContactoAsociado);
-            ViewData["ContraQuien"] = new SelectList(_context.Rivales, "Id", "Id", cotizacione.ContraQuien);
-            ViewData["Etapa"] = new SelectList(_context.Etapas, "Id", "Id", cotizacione.Etapa);
-            ViewData["Moneda"] = new SelectList(_context.Moneda, "Id", "Id", cotizacione.Moneda);
+            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Nombre", cotizacione.Asesor);
+            ViewData["ContactoAsociado"] = new SelectList(_context.Contactos, "IdContacto", "Nombre", cotizacione.ContactoAsociado);
+            ViewData["ContraQuien"] = new SelectList(_context.Rivales, "Id", "Nombre", cotizacione.ContraQuien);
+            ViewData["Etapa"] = new SelectList(_context.Etapas, "Id", "Etapa1", cotizacione.Etapa);
+            ViewData["Moneda"] = new SelectList(_context.Moneda, "Id", "NombreMoneda", cotizacione.Moneda);
             ViewData["NombreCuenta"] = new SelectList(_context.Clientes, "NombreCuenta", "NombreCuenta", cotizacione.NombreCuenta);
-            ViewData["Probabilidad"] = new SelectList(_context.Probabilidads, "Id", "Id", cotizacione.Probabilidad);
-            ViewData["RazonDenegacion"] = new SelectList(_context.CotizacionDenegada, "Id", "Id", cotizacione.RazonDenegacion);
-            ViewData["Sector"] = new SelectList(_context.Sectors, "Id", "Id", cotizacione.Sector);
-            ViewData["Tipo"] = new SelectList(_context.TipoCotizacions, "Id", "Id", cotizacione.Tipo);
-            ViewData["Zona"] = new SelectList(_context.Zonas, "Id", "Id", cotizacione.Zona);
+            ViewData["Probabilidad"] = new SelectList(_context.Probabilidads, "Id", "Etapa", cotizacione.Probabilidad);
+            ViewData["RazonDenegacion"] = new SelectList(_context.CotizacionDenegada, "Id", "Razon", cotizacione.RazonDenegacion);
+            ViewData["Sector"] = new SelectList(_context.Sectors, "Id", "Sector1", cotizacione.Sector);
+            ViewData["Tipo"] = new SelectList(_context.TipoCotizacions, "Id", "Tipo", cotizacione.Tipo);
+            ViewData["Zona"] = new SelectList(_context.Zonas, "Id", "Zona1", cotizacione.Zona);
             return View(cotizacione);
         }
 
-        // POST: Cotizaciones/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("NumeroCotizacion,NombreOportunidad,FechaCotizacion,FechaCierra,OrdenCompra,Descripcion,Factur,Zona,Sector,Moneda,ContactoAsociado,Asesor,NombreCuenta,Etapa,Probabilidad,Tipo,RazonDenegacion,ContraQuien")] Cotizacione cotizacione)
+        public async Task<IActionResult> Edit(string id, Cotizacione cotizacione)
         {
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
             {

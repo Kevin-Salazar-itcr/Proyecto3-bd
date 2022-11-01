@@ -22,7 +22,7 @@ namespace ProyectoCRM.Controllers
 
         ClientesProcesos ClientesDatos = new ClientesProcesos();
 
-        public async Task<IActionResult> Index1()
+        public async Task<IActionResult> Index()
         {
             //LA VISTA MOSTRARÁ UNA LISTA DE CONTACTOS
             var oLista = ClientesDatos.Listar();
@@ -35,7 +35,7 @@ namespace ProyectoCRM.Controllers
       
         public IActionResult Create()
         {
-            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Cedula");
+            ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Nombre");
             ViewData["Idmoneda"] = new SelectList(_context.Moneda, "Id", "NombreMoneda");
             ViewData["Idsector"] = new SelectList(_context.Sectors, "Id", "Sector1");
             ViewData["Idzona"] = new SelectList(_context.Zonas, "Id", "Zona1");
@@ -45,7 +45,7 @@ namespace ProyectoCRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NombreCuenta,Celular,Telefono,Correo,Sitio,ContactoPrincipal,Asesor,Idzona,Idsector,Idmoneda")] Cliente cliente)
+        public async Task<IActionResult> Create( Cliente cliente)
         {
 
             using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))

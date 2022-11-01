@@ -5,37 +5,37 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Cotizaciones</h1>
 
 
-<table class="table">
+
+<table class="table table-striped ">
     <thead>
         <tr>
+            <th>Numero</th>
             <th>Nombre</th>
             <th>Descripcion</th>
             <th>Factura</th>
             <th>Asesor</th>
-            <th>Contacto Asociado</th>
+            <th>Contacto</th>
             <th>Etapa</th>
-            <th>TIpo</th>
+            <th>Tipo</th>
             <th>Productos</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Cotizaciones)
         {
             <tr>
+                <td>@item.NumeroCotizacion</td>
                 <td>@item.NombreOportunidad</td>
                 <td>@item.Descripcion</td>
                 <td>@item.Factur</td>
-                <td>@item.Asesor</td>
-                <td>@item.ContactoAsociado</td>
-                <td>@item.Etapa</td>
-                <td>@item.Tipo</td>
+                <td>@item.AsesorNavigation.Nombre</td>
+                <td>@item.ContactoAsociadoNavigation.Nombre</td>
+                <td>@item.EtapaNavigation.Etapa1</td>
+                <td>@item.TipoNavigation.Tipo</td>
 
                 <td>
                     @foreach (var prod in item.ProductosXcotizacions)
@@ -50,9 +50,8 @@
 
                 <td>
 
-                    <a asp-action="Edit" asp-route-id="@item.NumeroCotizacion">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.NumeroCotizacion">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.NumeroCotizacion">Delete</a>
+                    <a class="btn btn-sm   btn-primary" asp-action="Edit" asp-route-id="@item.NumeroCotizacion">Editar</a>
+                    <a class="btn btn-sm   btn-primary" asp-action="Details" asp-route-id="@item.NumeroCotizacion">+ Detalles</a>
 
                 </td>
             </tr>
@@ -61,3 +60,4 @@
 
         }
 
+</table>

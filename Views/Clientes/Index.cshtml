@@ -1,34 +1,25 @@
-﻿@model IEnumerable<ProyectoCRM.Models.Cliente>
-
+﻿@model List<ClienteLista>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Clientes</h1>
 
-<h1>Lista de clientes</h1>
+<H1>Clientes</H1>
 
-
-
-
-<div class="card">
-    <div class="card-body">
-        <a class="btn btn-success btn-sm" asp-action="Create" asp-controller="Clientes">Crear Nuevo</a>
-        <hr />
-        <table class="table table-striped">
+        <table class="table table-striped ">
             <thead>
                 <tr>
-                    <th>Nombre de la cuenta</th>
+                    <th>Nombre </th>
                     <th>Celular</th>
                     <th>Telefono</th>
                     <th>Correo</th>
                     <th>Sitio</th>
-                    <th>Contacto principal</th>
+                    <th>Contacto</th>
                     <th>Asesor</th>
                     <th>Zona</th>
                     <th>Sector</th>
                     <th>Moneda</th>
-
                     <th></th>
                 </tr>
             </thead>
@@ -43,10 +34,11 @@
                         <td>@item.Sitio</td>
                         <td>@item.ContactoPrincipal</td>
                         <td>@item.Asesor</td>
-                        <td>@item.IdzonaNavigation.Zona1</td>
-                        <td>@item.IdsectorNavigation.Sector1</td>
-                        <td>@item.IdmonedaNavigation.NombreMoneda</td>
-                        
+                        <td>@item.Idzona</td>
+                        <td>@item.Idsector</td>
+                        <td>@item.Idmoneda</td>
+
+
                         <td>
 
                             <a class="btn btn-danger btn-sm " asp-action="Delete" asp-route-id="@item.NombreCuenta">Eliminar</a>
@@ -55,8 +47,11 @@
                     </tr>
 
 
-
                 }
             </tbody>
         </table>
+
+    </div>
+
+
 
