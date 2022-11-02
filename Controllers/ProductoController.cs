@@ -26,12 +26,12 @@ namespace ProyectoCRM.Controllers
         }
 
 
-        productosProcesos _ContactoDatos = new productosProcesos();
+        productosProcesos _productosDatos = new productosProcesos();
 
         public IActionResult index()
         {
             //LA VISTA MOSTRARÁ UNA LISTA DE CONTACTOS
-            var oLista = _ContactoDatos.Listar();
+            var oLista = _productosDatos.Listar();
 
             return View(oLista);
         }

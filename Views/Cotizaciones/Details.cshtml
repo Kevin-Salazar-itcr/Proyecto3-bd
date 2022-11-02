@@ -1,13 +1,12 @@
-﻿@model ProyectoCRM.Models.Cotizacione
+﻿@model ProyectoCRM.Models.CotizacionesListado
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Detalles cotizacion</h1>
 
 <div>
-    <h4>Cotizacione</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -47,74 +46,71 @@
             @Html.DisplayFor(model => model.Factur)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AsesorNavigation)
+            @Html.DisplayNameFor(model => model.Asesor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AsesorNavigation.Cedula)
+            @Html.DisplayFor(model => model.Asesor)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContactoAsociadoNavigation)
+            @Html.DisplayNameFor(model => model.ContactoAsociado)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContactoAsociadoNavigation.IdContacto)
+            @Html.DisplayFor(model => model.ContactoAsociado)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContraQuienNavigation)
+            @Html.DisplayNameFor(model => model.ContraQuien)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContraQuienNavigation.Id)
+            @Html.DisplayFor(model => model.ContraQuien)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EtapaNavigation)
+            @Html.DisplayNameFor(model => model.Etapa)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EtapaNavigation.Id)
+            @Html.DisplayFor(model => model.Etapa)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MonedaNavigation)
+            @Html.DisplayNameFor(model => model.Moneda)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MonedaNavigation.Id)
+            @Html.DisplayFor(model => model.Moneda)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NombreCuentaNavigation)
+            @Html.DisplayNameFor(model => model.NombreCuenta)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NombreCuentaNavigation.NombreCuenta)
+            @Html.DisplayFor(model => model.NombreCuenta)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProbabilidadNavigation)
+            @Html.DisplayNameFor(model => model.Probabilidad)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProbabilidadNavigation.Id)
+            @Html.DisplayFor(model => model.Probabilidad)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RazonDenegacionNavigation)
+            @Html.DisplayNameFor(model => model.RazonDenegacion)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RazonDenegacionNavigation.Id)
+            @Html.DisplayFor(model => model.RazonDenegacion)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SectorNavigation)
+            @Html.DisplayNameFor(model => model.Sector)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SectorNavigation.Id)
+            @Html.DisplayFor(model => model.Sector)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TipoNavigation)
+            @Html.DisplayNameFor(model => model.Tipo)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TipoNavigation.Id)
+            @Html.DisplayFor(model => model.Tipo)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ZonaNavigation)
+            @Html.DisplayNameFor(model => model.Zona)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ZonaNavigation.Id)
+            @Html.DisplayFor(model => model.Zona)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.NumeroCotizacion">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+

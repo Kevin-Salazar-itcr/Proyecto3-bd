@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using ProyectoCRM.Models;
 using ProyectoCRM.Models.ViewModels;
+using ProyectoCRM.Procesos;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ProyectoCRM.Controllers
@@ -42,6 +43,17 @@ namespace ProyectoCRM.Controllers
                   .ToListAsync();
 
             return View(viewModel);
+        }
+
+        contactosProcesos ContactoDatos = new contactosProcesos();
+
+
+        public async Task<IActionResult> Details(short? id)
+        {
+
+            var oLista = ContactoDatos.Listar((short)id);
+
+            return View(oLista);
         }
 
 

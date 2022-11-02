@@ -120,18 +120,34 @@ namespace ProyectoCRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.Clientes == null)
+            try
             {
-                return Problem("Entity set 'CRMContext.Clientes'  is null.");
+                using (SqlConnection conexion = new SqlConnection("Data Source=localhost ; Initial Catalog=CRM; Integrated Security=true"))
+                {
+                    conexion.Open();
+
+                    SqlCommand cmd = new SqlCommand("eliminarCliente", conexion);
+
+
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
+
+
+                }
             }
-            var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente != null)
+            catch (Exception e)
             {
-                _context.Clientes.Remove(cliente);
+
+                string error = e.Message;
+                return RedirectToAction("Index", "Cliente");
+
+
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction("index", "Cliente");
+
         }
 
     }

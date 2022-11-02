@@ -11,6 +11,7 @@ using ProyectoCRM.Models;
 using ProyectoCRM.logica;
 using ProyectoCRM.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using ProyectoCRM.Procesos;
 
 namespace ProyectoCRM.Controllers
 {
@@ -38,6 +39,9 @@ namespace ProyectoCRM.Controllers
                   .Include(i => i.NombreCuentaNavigation)
                   .Include(i => i.TipoNavigation)
                   .Include(i => i.ProductosXcotizacions)
+                 
+                 
+                  
 
 
 
@@ -49,32 +53,15 @@ namespace ProyectoCRM.Controllers
         }
 
 
+        CotizacionesProcesos cotDatos = new CotizacionesProcesos();
+
+
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.Cotizaciones == null)
-            {
-                return NotFound();
-            }
 
-            var cotizacione = await _context.Cotizaciones
-                .Include(c => c.AsesorNavigation)
-                .Include(c => c.ContactoAsociadoNavigation)
-                .Include(c => c.ContraQuienNavigation)
-                .Include(c => c.EtapaNavigation)
-                .Include(c => c.MonedaNavigation)
-                .Include(c => c.NombreCuentaNavigation)
-                .Include(c => c.ProbabilidadNavigation)
-                .Include(c => c.RazonDenegacionNavigation)
-                .Include(c => c.SectorNavigation)
-                .Include(c => c.TipoNavigation)
-                .Include(c => c.ZonaNavigation)
-                .FirstOrDefaultAsync(m => m.NumeroCotizacion == id);
-            if (cotizacione == null)
-            {
-                return NotFound();
-            }
+            var oLista = cotDatos.Listar(id);
 
-            return View(cotizacione);
+            return View(oLista);
         }
 
 

@@ -15,17 +15,15 @@
             <th>Nombre</th>
             <th>Motivo</th>
             <th>Telefono</th>
-            <th>Correo</th>
-            <th>Direccion</th>
             <th>Descripcion</th>
             <th>Cliente</th>
-            <th>Zona</th>
-            <th>Sector</th>
             <th>Asesor</th>
             <th>Tipo</th>
             <th>Estado</th>
             <th>Tareas</th>
             <th>Actividades</th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -37,17 +35,14 @@
                 <td>@item.Nombre</td>
                 <td>@item.Motivo</td>
                 <td>@item.Telefono</td>
-                <td>@item.Correo</td>
-                <td>@item.Direccion</td>
+      
                 <td>@item.Descripcion</td>
                 <td>@item.Cliente</td>
 
-
-                <td>@item.ZonaNavigation.Zona1      </td>
-                <td>@item.SectorNavigation.Sector1    </td>
                 <td>@item.AsesorNavigation.Nombre</td>
                 <td>@item.TipoContactoNavigation.Tipo</td>
                 <td>@item.EstadoNavigation.Estado1</td>
+                
 
 
                 <td>
@@ -68,12 +63,18 @@
                     }
                 </td>
 
+
+                <td>
+                    <a class="btn btn-sm   btn-primary" asp-controller="Contacto" asp-action="Details" asp-route-id="@item.IdContacto">+ Detalles</a>
+
+                </td>
                 <td>
 
                     <a class="btn btn-sm   btn-primary" asp-controller="Tareas" asp-action="Create" asp-route-id="@item.IdContacto">Agregar tarea</a>
-                    <a class="btn btn-sm   btn-primary" asp-controller="Actividad" asp-action="Create" asp-route-id="@item.IdContacto">Agregar actividad</a>
 
                 </td>
+
+                <td>  <a class="btn btn-sm   btn-primary" asp-controller="Actividad" asp-action="Create" asp-route-id="@item.IdContacto">Agregar actividad</a></td>
             </tr>
 
 
