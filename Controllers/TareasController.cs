@@ -103,7 +103,7 @@ namespace ProyectoCRM.Controllers
 
 
 
-         return RedirectToAction("index", "Tareas");
+         return RedirectToAction("index", "Contacto");
 
         }
 

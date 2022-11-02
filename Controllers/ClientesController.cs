@@ -84,7 +84,7 @@ namespace ProyectoCRM.Controllers
 
             }
 
-                return RedirectToAction("index", "Cliente");
+                return RedirectToAction("Index", "Cliente");
             }
 
 
@@ -146,7 +146,7 @@ namespace ProyectoCRM.Controllers
 
             }
 
-            return RedirectToAction("index", "Cliente");
+            return RedirectToAction("Index", "Cliente");
 
         }
 

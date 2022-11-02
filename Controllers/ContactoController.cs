@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -24,6 +25,30 @@ namespace ProyectoCRM.Controllers
         {
             _context = context;
         }
+
+
+
+        contactosProcesos ContactosDatos = new contactosProcesos();
+
+
+
+
+        public async Task<IActionResult> Index1(string buscar)
+        {
+            
+
+
+            if (!String.IsNullOrEmpty(buscar))
+            {
+              var oLista1 = ContactosDatos.ListarClient(buscar);
+              return View(oLista1);
+            }
+
+            var oLista = ContactosDatos.ListarTodo();
+
+            return View(oLista);
+        }
+
 
         public async Task<IActionResult> Index()
         {
