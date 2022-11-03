@@ -73,13 +73,21 @@
                     <a class="btn btn-sm   btn-primary" asp-controller="Contacto" asp-action="Details" asp-route-id="@item.IdContacto">+ Detalles</a>
 
                 </td>
-                <td>
 
-                    <a class="btn btn-sm   btn-primary" asp-controller="Tareas" asp-action="Create" asp-route-id="@item.IdContacto">Agregar tarea</a>
+                @if (User.IsInRole("1"))
+                {
+                    <td>
 
-                </td>
+                        <a class="btn btn-sm   btn-primary" asp-controller="Tareas" asp-action="Create" asp-route-id="@item.IdContacto">Agregar tarea</a>
 
-                <td>  <a class="btn btn-sm   btn-primary" asp-controller="Actividad" asp-action="Create" asp-route-id="@item.IdContacto">Agregar actividad</a></td>
+                    </td>
+
+                    <td>  <a class="btn btn-sm   btn-primary" asp-controller="Actividad" asp-action="Create" asp-route-id="@item.IdContacto">Agregar actividad</a></td>
+ 
+
+
+                }
+
             </tr>
 
 

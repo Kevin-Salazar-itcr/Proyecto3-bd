@@ -40,10 +40,13 @@
 
 
 
+                @if (User.IsInRole("1")) {
+                    <td>
+                        <a class="btn btn-primary btn-sm " asp-action="Edit" asp-route-id="@item.Codigo.ToString()">Editar</a>
+                    </td>
+                
+                }
 
-                        <td>
-                            <a class="btn btn-primary btn-sm " asp-action="Edit" asp-route-id="@item.Codigo.ToString()">Editar</a>
-                        </td>
                     </tr>
 
                 }

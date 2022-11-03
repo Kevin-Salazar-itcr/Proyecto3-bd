@@ -7,6 +7,8 @@ namespace ProyectoCRM.Procesos
     public class ClientesProcesos
     {
 
+        //Funcion que lista todos los clientes de la base de datos
+
         public List<ClienteLista> Listar()
         {
 

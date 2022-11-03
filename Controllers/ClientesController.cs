@@ -33,7 +33,7 @@ namespace ProyectoCRM.Controllers
 
         }
 
-     
+        //Funcion que prepara la vista para agregar clientes, retorna al view de create
       
         public IActionResult Create()
         {
@@ -45,6 +45,10 @@ namespace ProyectoCRM.Controllers
         }
 
 
+        //Funcion para agregar cliente
+        //E: Un objeto cliente
+        //S: El objeto cliente agregado a la base de datos
+        //R: Que el objeto cliente sea unico
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( Cliente cliente)
@@ -92,7 +96,7 @@ namespace ProyectoCRM.Controllers
         
 
 
-   
+        //Funcion que prepara la vista para eliminar, recibe el id del cliente
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Clientes == null)
@@ -115,7 +119,10 @@ namespace ProyectoCRM.Controllers
         }
 
     
-
+        //Funcion que elimina un cliente de la base de datos
+        //E: un id de cliente
+        //S: El cleinte eliminado de la base
+        //R: Que el cliente no este asociado a ningun otro registro
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

@@ -39,11 +39,15 @@
                         <td>@item.Idmoneda</td>
 
 
-                        <td>
+                @if (User.IsInRole("1")) {
+                    <td>
 
-                            <a class="btn btn-danger btn-sm " asp-action="Delete" asp-route-id="@item.NombreCuenta">Eliminar</a>
+                        <a class="btn btn-danger btn-sm " asp-action="Delete" asp-route-id="@item.NombreCuenta">Eliminar</a>
 
-                        </td>
+                    </td>
+                
+                }
+
                     </tr>
 
 

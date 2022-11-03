@@ -6,6 +6,8 @@
 
 
         public IEnumerable<Cotizacione> Cotizaciones { get; set; }
+
+        public IEnumerable<Producto> Productos { get; set; }
        
     }
 }

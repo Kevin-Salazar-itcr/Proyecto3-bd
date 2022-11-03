@@ -23,6 +23,7 @@ namespace ProyectoCRM.Controllers
             _context = context;
         }
 
+        //Funcion que retorna a la vista index con una lista de las actividades que existen
         public async Task<IActionResult> Index()
         {
             var cRMContext = _context.Actividads.Include(a => a.AsesorNavigation);
@@ -30,6 +31,7 @@ namespace ProyectoCRM.Controllers
         }
 
 
+        //Funcion que prepara el view para crear actividad
         public IActionResult Create(short? id)
         {
 
@@ -38,6 +40,9 @@ namespace ProyectoCRM.Controllers
             return View();
         }
 
+
+        //Funcion que crea la actividad, recibe como parametro una actividad y retorna a la pagina de listado de actividades
+        //Con la actividad previamente agregada
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Actividad actividad)
@@ -80,7 +85,9 @@ namespace ProyectoCRM.Controllers
 
         }
     
-
+        //Funcion que prepara la pantalla para editar actividad
+        //E: El id de la actividad
+        //S: La vista principal de editar actividad
 
 
         public async Task<IActionResult> Edit(short? id)
@@ -99,6 +106,9 @@ namespace ProyectoCRM.Controllers
             return View(actividad);
         }
 
+        //Funcionq que edita una actividad
+        //E: El id de la actividad y la actividad
+        //S: La actividad editada
 
         [HttpPost]
         [ValidateAntiForgeryToken]

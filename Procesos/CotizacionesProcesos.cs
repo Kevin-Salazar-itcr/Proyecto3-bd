@@ -8,7 +8,7 @@ namespace ProyectoCRM.Procesos
     public class CotizacionesProcesos
     {
 
-
+        //Funcion que lista la informacion de una cotizacion y la retorna
         public CotizacionesListado Listar(String id)
         {
 

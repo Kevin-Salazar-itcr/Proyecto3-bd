@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ProyectoCRM.Models.ValorPresenteCotizacione>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreOportunidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnioCotizacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalCotizacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalValorPresente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactoAsociadoNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreCuentaNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreOportunidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnioCotizacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalCotizacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalValorPresente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactoAsociadoNavigation.IdContacto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreCuentaNavigation.NombreCuenta)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdCotizacion">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdCotizacion">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdCotizacion">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

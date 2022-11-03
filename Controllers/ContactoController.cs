@@ -31,6 +31,9 @@ namespace ProyectoCRM.Controllers
         contactosProcesos ContactosDatos = new contactosProcesos();
 
 
+        //Funcion utiliZada para la pantalla de busqueda de contactos
+        //E: Un nombre el que buscar
+        //S: Retorna los objetos que contienen este nombre
 
 
         public async Task<IActionResult> Index1(string buscar)
@@ -49,6 +52,7 @@ namespace ProyectoCRM.Controllers
             return View(oLista);
         }
 
+        //Funcion utiliZada para listar los contactos con sus tareas y actividades
 
         public async Task<IActionResult> Index()
         {
@@ -73,6 +77,9 @@ namespace ProyectoCRM.Controllers
         contactosProcesos ContactoDatos = new contactosProcesos();
 
 
+        //Funcion utiliZada para mostrar detalles de un contacto
+        //E: un id
+        //S:La informacion del contacto
         public async Task<IActionResult> Details(short? id)
         {
 
@@ -81,7 +88,7 @@ namespace ProyectoCRM.Controllers
             return View(oLista);
         }
 
-
+        //Funcion que prepara la pantalla para agregar contactos
         public IActionResult Create()
         {
             ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Nombre");
@@ -93,7 +100,9 @@ namespace ProyectoCRM.Controllers
             return View();
         }
 
-
+        //Funcion para crear un contacto
+        //E:En objeto tipo contacto
+        //S:La agregacion de este contacto a la base de datos
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Contacto contacto)

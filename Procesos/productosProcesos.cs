@@ -8,7 +8,7 @@ namespace ProyectoCRM.Procesos
     public class productosProcesos
     {
 
-
+        //Funcion que lista la informacion de todos los productos existentes en la base de datos
 
         public List<Producto> Listar()
         {
@@ -51,6 +51,7 @@ namespace ProyectoCRM.Procesos
         }
 
 
+        //Funcion que recibe una producto y lo agrega a la base de datos
         public bool Guardar(Producto producto)
         {
             bool rpta;
@@ -93,7 +94,7 @@ namespace ProyectoCRM.Procesos
             return rpta;
         }
 
-
+        //funcion para editar los campos de un producto en la base
         public bool Editar(Producto producto)
         {
             bool rpta;

@@ -7,7 +7,7 @@ namespace ProyectoCRM.logica
 {
     public class log
     {
-
+        //FUncion creada para retornar la informacion de un USUARIO si existe en la base de datos
         public Usuario EncontrarUsuario (string usuario, string clave) 
         {
             string patron = "adjany";
@@ -62,7 +62,7 @@ namespace ProyectoCRM.logica
 
 
 
-
+        //FUncion creada para retornar la informacion de un contacto si existe en la base de datos
         public Contacto EncontrarContacto(short contacto)
         {
             

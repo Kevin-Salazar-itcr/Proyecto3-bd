@@ -38,7 +38,7 @@ namespace ProyectoCRM.Controllers
 
 
 
-
+        //Funcion que prepara la vista para agregar productos
         [HttpGet]
         public IActionResult Create()
 
@@ -63,6 +63,9 @@ namespace ProyectoCRM.Controllers
 
         }
 
+        //Funcion que crea un producto en la base de datos
+        //E: Un producto
+        //S: El producto agregado en la base
         [HttpPost]
         public IActionResult Create(ProductoVM OproductoVM) {
 
@@ -107,7 +110,7 @@ namespace ProyectoCRM.Controllers
         }
 
       
-
+        //funcion que prepara la vista para editar productos
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Productos == null)
@@ -124,6 +127,11 @@ namespace ProyectoCRM.Controllers
             return View(producto);
         }
 
+
+
+        //funcion que edita el producto en la base de datos
+        //E: un id y un objeto producto
+        //S: la edicion de algunos campos del producto
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, Producto producto)

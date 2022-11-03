@@ -27,7 +27,7 @@ namespace ProyectoCRM.Controllers
             _context = context;
         }
 
-   
+       //funcion que lista las tareas creadas
         public async Task<IActionResult> Index()
         {
             var cRMContext = _context.Tareas.Include(t => t.AsesorNavigation).Include(t => t.EstadoNavigation);
@@ -54,6 +54,7 @@ namespace ProyectoCRM.Controllers
             return View(tarea);
         }
 
+        //funcion que prepara la pantalla para la creacion de la tarea
 
         public async Task<IActionResult> Create(short? id)
         {
@@ -65,6 +66,10 @@ namespace ProyectoCRM.Controllers
             ViewData["Estado"] = new SelectList(_context.Estados, "Id", "Estado1");
             return View();
         }
+
+        //Funcion para agregar las tareas a los contactos
+        //E:  un objeto tarea
+        //S: la agrergacion de la tarea a la base de datos y al contacto
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -107,7 +112,7 @@ namespace ProyectoCRM.Controllers
 
         }
 
-    
+        //funcion que prepara la vista para editar la tarea
         public async Task<IActionResult> Edit(short? id)
         {
             if (id == null || _context.Tareas == null)
@@ -124,6 +129,10 @@ namespace ProyectoCRM.Controllers
             ViewData["Estado"] = new SelectList(_context.Estados, "Id", "Estado1", tarea.Estado);
             return View(tarea);
         }
+
+        //Funcion que edita la informacion de una tarea
+        //E: Un id y un objeto tipo tarea
+        //S: la edicion del objeto
 
         [HttpPost]
         [ValidateAntiForgeryToken]

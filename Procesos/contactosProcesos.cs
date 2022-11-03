@@ -7,6 +7,8 @@ namespace ProyectoCRM.Procesos
 {
     public class contactosProcesos
     {
+     
+        //FUncion que devuelve la informacion de un contacto
         public ContactoLista Listar(short id)
         {
 
@@ -58,6 +60,7 @@ namespace ProyectoCRM.Procesos
 
         }
 
+        //funcion que devuelve la informacion de todos los contactos
         public List<ContactoLista> ListarTodo()
         {
 
@@ -119,6 +122,7 @@ namespace ProyectoCRM.Procesos
 
         }
 
+        //La informacion que devuelve los contactos segun sus clientes
         public   List<ContactoLista>  ListarClient(String id)
         {
 

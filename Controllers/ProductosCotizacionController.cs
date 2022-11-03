@@ -23,12 +23,15 @@ namespace ProyectoCRM.Controllers
             _context = context;
         }
 
+        //Funcion que lista los productos
+
         public async Task<IActionResult> Index()
         {
             var cRMContext = _context.ProductosXcotizacions.Include(p => p.CodigoProductoNavigation).Include(p => p.NumeroCotizacionNavigation);
             return View(await cRMContext.ToListAsync());
         }
 
+        //Funcion que prepara la pantalla para agregar productos a cotizaciones
 
         public IActionResult Create()
         {
@@ -37,7 +40,9 @@ namespace ProyectoCRM.Controllers
             return View();
         }
 
-
+        //FUncion que agrega los productos a la cotizacion
+        //E: un objeto con la informacion del producto y la cotizacion
+        //S: La agregacion exitosa
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductosXcotizacion productosXcotizacion)

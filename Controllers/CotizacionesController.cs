@@ -12,6 +12,7 @@ using ProyectoCRM.logica;
 using ProyectoCRM.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using ProyectoCRM.Procesos;
+using ProyectoCRM.Models.ViewModels;
 
 namespace ProyectoCRM.Controllers
 {
@@ -25,7 +26,7 @@ namespace ProyectoCRM.Controllers
             _context = context;
         }
 
-
+        //Funcion que lista las cotiaciones existentes en la baase de datos
         public async Task<IActionResult> Index()
         {
 
@@ -39,10 +40,8 @@ namespace ProyectoCRM.Controllers
                   .Include(i => i.NombreCuentaNavigation)
                   .Include(i => i.TipoNavigation)
                   .Include(i => i.ProductosXcotizacions)
-                 
-                 
-                  
-
+                   .ThenInclude(i => i.CodigoProductoNavigation)
+                         
 
 
                   .AsNoTracking()
@@ -56,6 +55,10 @@ namespace ProyectoCRM.Controllers
         CotizacionesProcesos cotDatos = new CotizacionesProcesos();
 
 
+        //Fucnion que rretorna los detalles de una cotiZacion
+        //E:Un id
+       
+
         public async Task<IActionResult> Details(string id)
         {
 
@@ -64,7 +67,7 @@ namespace ProyectoCRM.Controllers
             return View(oLista);
         }
 
-
+        //Funcion que prepara la vista de agregar cotiZacion
         public IActionResult Create()
         {
             ViewData["Asesor"] = new SelectList(_context.Usuarios, "Cedula", "Nombre");
@@ -79,6 +82,9 @@ namespace ProyectoCRM.Controllers
             return View();
         }
 
+        //Funcion para agregar una cotiZacion
+        //E: Un objeto de tipo cotiZacion
+        //S: la insercion de este objeto en la base de datos
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -142,7 +148,9 @@ namespace ProyectoCRM.Controllers
         }
 
 
-
+        //Funcion que prepara la vista para editar una cotiZacion
+        //E: Un id
+        //S: El objeto editado en la base
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Cotizaciones == null)
@@ -168,6 +176,13 @@ namespace ProyectoCRM.Controllers
             ViewData["Zona"] = new SelectList(_context.Zonas, "Id", "Zona1", cotizacione.Zona);
             return View(cotizacione);
         }
+
+
+
+
+        //Funcion que edita una cotiZacion
+        //E: Un id
+        //S: El objeto editado en la base
 
         [HttpPost]
         [ValidateAntiForgeryToken]

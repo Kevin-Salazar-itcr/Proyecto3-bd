@@ -1,10 +1,18 @@
-﻿namespace ProyectoCRM.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProyectoCRM.Models
 {
     public class CotizacionesListado
     {
         public string NumeroCotizacion { get; set; } = null!;
         public string NombreOportunidad { get; set; } = null!;
+
+        [DataType(DataType.Date)]           
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaCotizacion { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaCierra { get; set; }
         public string OrdenCompra { get; set; } = null!;
         public string Descripcion { get; set; } = null!;

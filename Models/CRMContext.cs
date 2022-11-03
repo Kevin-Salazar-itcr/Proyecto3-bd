@@ -38,13 +38,15 @@ namespace ProyectoCRM.Models
         public virtual DbSet<TipoContacto> TipoContactos { get; set; } = null!;
         public virtual DbSet<TipoCotizacion> TipoCotizacions { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
+        public virtual DbSet<ValorPresenteCotizacione> ValorPresenteCotizaciones { get; set; } = null!;
         public virtual DbSet<Zona> Zonas { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-             //   optionsBuilder.UseSqlServer("Server=localhost;Database=CRM;Trusted_Connection=True;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=localhost;Database=CRM;Trusted_Connection=True;");
             }
         }
 
@@ -54,7 +56,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("actividad");
 
-                entity.HasIndex(e => e.Id, "UQ__activida__3213E83EEAD3A526")
+                entity.HasIndex(e => e.Id, "UQ__activida__3213E83EBB1F8292")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -62,7 +64,7 @@ namespace ProyectoCRM.Models
                     .HasColumnName("id");
 
                 entity.Property(e => e.Asesor)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("asesor");
 
@@ -89,17 +91,17 @@ namespace ProyectoCRM.Models
             modelBuilder.Entity<Cliente>(entity =>
             {
                 entity.HasKey(e => e.NombreCuenta)
-                    .HasName("PK__cliente__7E5CF2B8479351B2");
+                    .HasName("PK__cliente__7E5CF2B8C96798DE");
 
                 entity.ToTable("cliente");
 
                 entity.Property(e => e.NombreCuenta)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("nombre_cuenta");
 
                 entity.Property(e => e.Asesor)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("asesor");
 
@@ -162,7 +164,7 @@ namespace ProyectoCRM.Models
             modelBuilder.Entity<Contacto>(entity =>
             {
                 entity.HasKey(e => e.IdContacto)
-                    .HasName("PK__contacto__4B1329C7D4345326");
+                    .HasName("PK__contacto__4B1329C7FD7E18BF");
 
                 entity.ToTable("contacto");
 
@@ -171,12 +173,12 @@ namespace ProyectoCRM.Models
                     .HasColumnName("idContacto");
 
                 entity.Property(e => e.Asesor)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("asesor");
 
                 entity.Property(e => e.Cliente)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("cliente");
 
@@ -262,7 +264,7 @@ namespace ProyectoCRM.Models
                         r => r.HasOne<Contacto>().WithMany().HasForeignKey("Contacto").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__actividad__conta__5AEE82B9"),
                         j =>
                         {
-                            j.HasKey("Contacto", "Actividad").HasName("PK__activida__387C6263B01FE680");
+                            j.HasKey("Contacto", "Actividad").HasName("PK__activida__387C6263F261228F");
 
                             j.ToTable("actividadesXcontacto");
 
@@ -279,7 +281,7 @@ namespace ProyectoCRM.Models
                         r => r.HasOne<Contacto>().WithMany().HasForeignKey("Contacto").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__tareaXcon__conta__5EBF139D"),
                         j =>
                         {
-                            j.HasKey("Contacto", "Tarea").HasName("PK__tareaXco__80667CCDF2DCB0BE");
+                            j.HasKey("Contacto", "Tarea").HasName("PK__tareaXco__80667CCD246A35E8");
 
                             j.ToTable("tareaXcontacto");
 
@@ -293,7 +295,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("cotizacionDenegada");
 
-                entity.HasIndex(e => e.Id, "UQ__cotizaci__3213E83E5F3D533B")
+                entity.HasIndex(e => e.Id, "UQ__cotizaci__3213E83E5180F125")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -310,17 +312,17 @@ namespace ProyectoCRM.Models
             modelBuilder.Entity<Cotizacione>(entity =>
             {
                 entity.HasKey(e => e.NumeroCotizacion)
-                    .HasName("PK__cotizaci__2B77500B8C4175B8");
+                    .HasName("PK__cotizaci__2B77500B2B20891F");
 
                 entity.ToTable("cotizaciones");
 
                 entity.Property(e => e.NumeroCotizacion)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("numeroCotizacion");
 
                 entity.Property(e => e.Asesor)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("asesor");
 
@@ -354,17 +356,17 @@ namespace ProyectoCRM.Models
                 entity.Property(e => e.Moneda).HasColumnName("moneda");
 
                 entity.Property(e => e.NombreCuenta)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("nombreCuenta");
 
                 entity.Property(e => e.NombreOportunidad)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("nombreOportunidad");
 
                 entity.Property(e => e.OrdenCompra)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("ordenCompra");
 
@@ -453,11 +455,11 @@ namespace ProyectoCRM.Models
                         r => r.HasOne<Cotizacione>().WithMany().HasForeignKey("NumeroCotizacion").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__actividad__numer__07C12930"),
                         j =>
                         {
-                            j.HasKey("NumeroCotizacion", "ActividadCotizacion").HasName("PK__activida__E60993CC1D2ECDF1");
+                            j.HasKey("NumeroCotizacion", "ActividadCotizacion").HasName("PK__activida__E60993CC2D71F12F");
 
                             j.ToTable("actividadXcotizacion");
 
-                            j.IndexerProperty<string>("NumeroCotizacion").HasMaxLength(10).IsUnicode(false).HasColumnName("numero_cotizacion");
+                            j.IndexerProperty<string>("NumeroCotizacion").HasMaxLength(20).IsUnicode(false).HasColumnName("numero_cotizacion");
 
                             j.IndexerProperty<short>("ActividadCotizacion").HasColumnName("actividad_cotizacion");
                         });
@@ -470,11 +472,11 @@ namespace ProyectoCRM.Models
                         r => r.HasOne<Cotizacione>().WithMany().HasForeignKey("NumeroCotizacion").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__tareaXcot__numer__03F0984C"),
                         j =>
                         {
-                            j.HasKey("NumeroCotizacion", "TareaCotizacion").HasName("PK__tareaXco__78BCABADFE7A5DA6");
+                            j.HasKey("NumeroCotizacion", "TareaCotizacion").HasName("PK__tareaXco__78BCABAD61DBDBE7");
 
                             j.ToTable("tareaXcotizacion");
 
-                            j.IndexerProperty<string>("NumeroCotizacion").HasMaxLength(10).IsUnicode(false).HasColumnName("numero_cotizacion");
+                            j.IndexerProperty<string>("NumeroCotizacion").HasMaxLength(20).IsUnicode(false).HasColumnName("numero_cotizacion");
 
                             j.IndexerProperty<short>("TareaCotizacion").HasColumnName("tarea_cotizacion");
                         });
@@ -484,7 +486,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("departamento");
 
-                entity.HasIndex(e => e.Id, "UQ__departam__3213E83E06E9FE73")
+                entity.HasIndex(e => e.Id, "UQ__departam__3213E83E29D1CD8C")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -500,11 +502,11 @@ namespace ProyectoCRM.Models
             modelBuilder.Entity<Ejecucion>(entity =>
             {
                 entity.HasKey(e => e.Idejecucion)
-                    .HasName("PK__ejecucio__7F8C9D19A70FC13A");
+                    .HasName("PK__ejecucio__7F8C9D1968381291");
 
                 entity.ToTable("ejecucion");
 
-                entity.HasIndex(e => e.Idejecucion, "UQ__ejecucio__7F8C9D18ABB567EB")
+                entity.HasIndex(e => e.Idejecucion, "UQ__ejecucio__7F8C9D181531F5E6")
                     .IsUnique();
 
                 entity.Property(e => e.Idejecucion)
@@ -512,7 +514,7 @@ namespace ProyectoCRM.Models
                     .HasColumnName("IDejecucion");
 
                 entity.Property(e => e.Asesor)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("asesor");
 
@@ -527,22 +529,22 @@ namespace ProyectoCRM.Models
                     .HasColumnName("fecha_ejecucion");
 
                 entity.Property(e => e.Nombre)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("nombre");
 
                 entity.Property(e => e.NombreCuenta)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("nombre_cuenta");
 
                 entity.Property(e => e.NumeroCotizacion)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("numero_cotizacion");
 
                 entity.Property(e => e.Propietario)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("propietario");
 
@@ -578,7 +580,7 @@ namespace ProyectoCRM.Models
                         r => r.HasOne<Ejecucion>().WithMany().HasForeignKey("Ejecucion").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__actividad__ejecu__123EB7A3"),
                         j =>
                         {
-                            j.HasKey("Ejecucion", "Actividad").HasName("PK__activida__410CFF91ED6DF8F1");
+                            j.HasKey("Ejecucion", "Actividad").HasName("PK__activida__410CFF9140D5FE62");
 
                             j.ToTable("actividadesXejecucion");
 
@@ -595,7 +597,7 @@ namespace ProyectoCRM.Models
                         r => r.HasOne<Ejecucion>().WithMany().HasForeignKey("Ejecucion").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__tareaXeje__ejecu__160F4887"),
                         j =>
                         {
-                            j.HasKey("Ejecucion", "Tarea").HasName("PK__tareaXej__F916E13F76A19AAF");
+                            j.HasKey("Ejecucion", "Tarea").HasName("PK__tareaXej__F916E13F87ABB966");
 
                             j.ToTable("tareaXejecucion");
 
@@ -609,7 +611,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("estado");
 
-                entity.HasIndex(e => e.Id, "UQ__estado__3213E83EE17E4F84")
+                entity.HasIndex(e => e.Id, "UQ__estado__3213E83EE39C0EF8")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -626,7 +628,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("etapa");
 
-                entity.HasIndex(e => e.Id, "UQ__etapa__3213E83E999D939F")
+                entity.HasIndex(e => e.Id, "UQ__etapa__3213E83EE2319EB2")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -642,15 +644,15 @@ namespace ProyectoCRM.Models
             modelBuilder.Entity<FamiliaProducto>(entity =>
             {
                 entity.HasKey(e => e.Codigo)
-                    .HasName("PK__familia___40F9A20721C0DE23");
+                    .HasName("PK__familia___40F9A2078002A703");
 
                 entity.ToTable("familia_producto");
 
-                entity.HasIndex(e => e.Codigo, "UQ__familia___40F9A2068FB7D624")
+                entity.HasIndex(e => e.Codigo, "UQ__familia___40F9A20672DF3334")
                     .IsUnique();
 
                 entity.Property(e => e.Codigo)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("codigo");
 
@@ -669,7 +671,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("inflacion");
 
-                entity.HasIndex(e => e.Id, "UQ__inflacio__3213E83E6CD0787B")
+                entity.HasIndex(e => e.Id, "UQ__inflacio__3213E83ED6FCDED4")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -683,7 +685,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("moneda");
 
-                entity.HasIndex(e => e.Id, "UQ__moneda__3213E83EB6352F57")
+                entity.HasIndex(e => e.Id, "UQ__moneda__3213E83E65F3161D")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -691,7 +693,7 @@ namespace ProyectoCRM.Models
                     .HasColumnName("id");
 
                 entity.Property(e => e.NombreMoneda)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false);
             });
 
@@ -699,7 +701,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("probabilidad");
 
-                entity.HasIndex(e => e.Id, "UQ__probabil__3213E83E9DCD1025")
+                entity.HasIndex(e => e.Id, "UQ__probabil__3213E83E93D7D8B9")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -712,22 +714,22 @@ namespace ProyectoCRM.Models
             modelBuilder.Entity<Producto>(entity =>
             {
                 entity.HasKey(e => e.Codigo)
-                    .HasName("PK__producto__40F9A207304F834C");
+                    .HasName("PK__producto__40F9A207B42773F4");
 
                 entity.ToTable("producto");
 
-                entity.HasIndex(e => e.Codigo, "UQ__producto__40F9A20699FF798D")
+                entity.HasIndex(e => e.Codigo, "UQ__producto__40F9A2069CBAA10F")
                     .IsUnique();
 
                 entity.Property(e => e.Codigo)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("codigo");
 
                 entity.Property(e => e.Activo).HasColumnName("activo");
 
                 entity.Property(e => e.CodigoFamilia)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("codigo_familia");
 
@@ -755,17 +757,17 @@ namespace ProyectoCRM.Models
             modelBuilder.Entity<ProductosXcotizacion>(entity =>
             {
                 entity.HasKey(e => new { e.CodigoProducto, e.NumeroCotizacion })
-                    .HasName("PK__producto__E9AA2349ABB8DDD3");
+                    .HasName("PK__producto__E9AA2349C8B620AF");
 
                 entity.ToTable("productosXcotizacion");
 
                 entity.Property(e => e.CodigoProducto)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("codigo_producto");
 
                 entity.Property(e => e.NumeroCotizacion)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("numero_cotizacion");
 
@@ -792,7 +794,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("rivales");
 
-                entity.HasIndex(e => e.Id, "UQ__rivales__3213E83E364BE469")
+                entity.HasIndex(e => e.Id, "UQ__rivales__3213E83ED890A924")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -810,7 +812,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("rol");
 
-                entity.HasIndex(e => e.Id, "UQ__rol__3213E83EF23122B5")
+                entity.HasIndex(e => e.Id, "UQ__rol__3213E83E12ED18F8")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -827,7 +829,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("sector");
 
-                entity.HasIndex(e => e.Id, "UQ__sector__3213E83E14AD8626")
+                entity.HasIndex(e => e.Id, "UQ__sector__3213E83EA6DCD4C1")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -844,7 +846,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("tarea");
 
-                entity.HasIndex(e => e.Id, "UQ__tarea__3213E83E55A4CBF9")
+                entity.HasIndex(e => e.Id, "UQ__tarea__3213E83E916A4E6D")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -852,7 +854,7 @@ namespace ProyectoCRM.Models
                     .HasColumnName("id");
 
                 entity.Property(e => e.Asesor)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("asesor");
 
@@ -888,7 +890,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("tipoContacto");
 
-                entity.HasIndex(e => e.Id, "UQ__tipoCont__3213E83ED509651D")
+                entity.HasIndex(e => e.Id, "UQ__tipoCont__3213E83EEA03838F")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -905,7 +907,7 @@ namespace ProyectoCRM.Models
             {
                 entity.ToTable("tipoCotizacion");
 
-                entity.HasIndex(e => e.Id, "UQ__tipoCoti__3213E83E54F25EBB")
+                entity.HasIndex(e => e.Id, "UQ__tipoCoti__3213E83E76EB5B95")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -921,15 +923,15 @@ namespace ProyectoCRM.Models
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.Cedula)
-                    .HasName("PK__usuario__415B7BE4B6F506EB");
+                    .HasName("PK__usuario__415B7BE46564ACD1");
 
                 entity.ToTable("usuario");
 
-                entity.HasIndex(e => e.Cedula, "UQ__usuario__415B7BE57C113152")
+                entity.HasIndex(e => e.Cedula, "UQ__usuario__415B7BE5A98470E9")
                     .IsUnique();
 
                 entity.Property(e => e.Cedula)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("cedula");
 
@@ -975,11 +977,54 @@ namespace ProyectoCRM.Models
                     .HasConstraintName("FK__usuario__rol__3B75D760");
             });
 
+            modelBuilder.Entity<ValorPresenteCotizacione>(entity =>
+            {
+                entity.HasKey(e => e.IdCotizacion)
+                    .HasName("PK__ValorPre__D931C39B635543AA");
+
+                entity.Property(e => e.IdCotizacion)
+                    .ValueGeneratedNever()
+                    .HasColumnName("idCotizacion");
+
+                entity.Property(e => e.AnioCotizacion).HasColumnName("anioCotizacion");
+
+                entity.Property(e => e.ContactoAsociado).HasColumnName("contactoAsociado");
+
+                entity.Property(e => e.NombreCuenta)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("nombreCuenta");
+
+                entity.Property(e => e.NombreOportunidad)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("nombreOportunidad");
+
+                entity.Property(e => e.TotalCotizacion)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("totalCotizacion");
+
+                entity.Property(e => e.TotalValorPresente)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("totalValorPresente");
+
+                entity.HasOne(d => d.ContactoAsociadoNavigation)
+                    .WithMany(p => p.ValorPresenteCotizaciones)
+                    .HasForeignKey(d => d.ContactoAsociado)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ValorPres__conta__19DFD96B");
+
+                entity.HasOne(d => d.NombreCuentaNavigation)
+                    .WithMany(p => p.ValorPresenteCotizaciones)
+                    .HasForeignKey(d => d.NombreCuenta)
+                    .HasConstraintName("FK__ValorPres__nombr__1AD3FDA4");
+            });
+
             modelBuilder.Entity<Zona>(entity =>
             {
                 entity.ToTable("zona");
 
-                entity.HasIndex(e => e.Id, "UQ__zona__3213E83E9BC2CC80")
+                entity.HasIndex(e => e.Id, "UQ__zona__3213E83E3111FBD5")
                     .IsUnique();
 
                 entity.Property(e => e.Id)

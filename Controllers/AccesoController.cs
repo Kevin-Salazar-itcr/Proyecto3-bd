@@ -11,11 +11,15 @@ namespace ProyectoCRM.Controllers
 {
     public class AccesoController : Controller
     {
+        //Funcion que retorna a la pantalla de acceso
         public IActionResult Index()
         {
             return View();
         }
 
+        //Funcion encargada de validar si el usuario existe en la base de datos
+        //E: Un usuario y una clave
+        //S: Si el usuario es valido retorna a la pagina de inicio
         [HttpPost]
         public async Task<IActionResult> IndexAsync(string usuario, string clave)
         {
@@ -63,6 +67,7 @@ namespace ProyectoCRM.Controllers
 
         }
 
+        //Funcion que cierra sesion, retorna al login de inicio
 
         public async Task<IActionResult> Salir()
         {
