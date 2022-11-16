@@ -90,3 +90,112 @@ from cotizaciones
 join cliente on cotizaciones.nombreCuenta = cliente.nombre_cuenta
 order by [Días de diferencía] DESC
 
+----------------------------------------------------------------------------------------------------------------
+
+-- FUncion para sacar el total de ventas que tiene un cliente con mayores ventas.
+
+create function totalDeLaVenta(@cliente VARCHAR(20))
+returns decimal(9,2)
+as
+begin
+	declare @result decimal(9,2);
+	select @result = sum(productosXcotizacion.precioNegociado * productosXcotizacion.cantidad) 
+	from cotizaciones 
+	Join cliente on cotizaciones.nombreCuenta = cliente.nombre_cuenta
+	Join productosXcotizacion on cotizaciones.numeroCotizacion = productosXcotizacion.numero_cotizacion
+	where @cliente = cotizaciones.nombreCuenta and cotizaciones.probabilidad = 4
+	return @result
+end
+
+-- Vista que retorna el top 10 de los clientes con mayores ventas
+CREATE view topVentasClientes
+as
+select top 10 cliente.nombre_cuenta , dbo.totalDeLaVenta(nombre_cuenta) as [Venta total]
+from cliente
+order by [Venta total] DESC
+
+----------------------------------------------------------------------------------------------------------------
+
+--  Funcion que devuelve el total de actividades por cotiZacion 
+
+
+create function totalActividades(@cot VARCHAR(20))
+returns INT 
+as
+begin
+	declare @result int;
+	select @result = count(numero_cotizacion) 
+	from actividadXcotizacion 
+	where @cot = numero_cotizacion
+	return @result
+end
+
+--  Funcion que devuelve el total de tareas por cotiZacion 
+
+create function totalTareas(@cot VARCHAR(20))
+returns INT 
+as
+begin
+	declare @result int;
+	select @result = count(numero_cotizacion) 
+	from tareaXcotizacion 
+	where @cot = numero_cotizacion
+	return @result
+end
+
+
+
+-- VISTA QUE RETORNA Top 10 de cotizaciones con más actividades y tareas (sumadas juntas).
+CREATE view TotalTareasYactividades
+as
+select top 10 numeroCotizacion, nombreOportunidad, dbo.totalActividades(numeroCotizacion) + dbo.totalTareas(numeroCotizacion) as [Total tareas y actividades]
+from cotizaciones
+order by[Total tareas y actividades] DESC
+
+-----------------------------------------------------------------------------------------------------------
+-- Funcion que devuelve el total de las ventas por asesor/usuraio
+
+create function VentaVendedor(@asesor VARCHAR(20))
+returns decimal(9,2)
+as
+begin
+	declare @result decimal(9,2);
+	select @result = sum(productosXcotizacion.precioNegociado * productosXcotizacion.cantidad) 
+	from cotizaciones 
+	Join productosXcotizacion on cotizaciones.numeroCotizacion = productosXcotizacion.numero_cotizacion
+	where @asesor = asesor and cotizaciones.probabilidad = 4
+	return @result
+end
+
+--Vista para el top 10 de vendedores con mayores ventas 
+CREATE view topVentasVendedor
+as
+select top 10 nombre+' '+apellido1+' '+apellido1 AS Vendedor , dbo.VentaVendedor(cedula) as [Venta total]
+from usuario
+order by [Venta total] DESC
+
+-----------------------------------------------------------------------------------------------------------
+
+--Funcion para retornar la cantidad de cotizaciones por tipo
+
+create function CantCotTipo(@id smallint)
+returns int
+as
+begin
+	declare @result int;
+	select @result = count(tipo) 
+	from  cotizaciones
+	where @id = tipo
+	return @result
+end
+
+--Vista que retorna la cantidad de cotiZaciones por tipo
+
+create view CotXtipo
+AS
+SELECT tipo, dbo.CantCotTipo(id) as cantidad
+FROM tipoCotizacion
+
+-----------------------------------------------------------------------------------------------------------
+
+
