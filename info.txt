@@ -1,0 +1,10 @@
+Bases de datos 1
+II semestre, 2022
+
+Estudiantes
+	Adjany Gard Alpizar     2021117164
+	Kevin Salazar Valles    2021138547
+
+Proyecto programado #2
+Fecha de entrega: 02 de noviembre
+Estatus de la entrega EXCELENTE
