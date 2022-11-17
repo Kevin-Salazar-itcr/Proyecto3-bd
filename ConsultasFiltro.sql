@@ -365,6 +365,31 @@ RETURN
 
 )
 GO
+-------------------------------------------------------------------
+
+--Todo lo necesario para la consulta #16
+
+--Funcion para obtener el monto de ventas por zona
+create function montoXzona(@zona smallint)
+returns table
+as
+RETURN
+(
+	select numeroCotizacion, SUM(precioNegociado * cantidad) as monto
+	from cotizaciones, productosXcotizacion
+	where zona = @zona and numeroCotizacion = numero_cotizacion
+	group by numeroCotizacion
+)
+go
+
+create view clientesXzona
+as
+select z.zona, count(c.IDzona) as cantidad, (select SUM(monto) from dbo.montoXzona(z.id)) as monto from zona z, cliente c
+where z.id = c.IDzona
+group by z.zona, c.IDzona, z.id
+go
+
+select * from clientesXzona
 
 -------------------------------------------------------------------
 
