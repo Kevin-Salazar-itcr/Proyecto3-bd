@@ -129,7 +129,7 @@ RETURN
 	order bY  dbo.CotProducto(codigo,@fechaini, @fechafin ) desc
 )
 GO
-----------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 --Todo lo necesario para la consulta #4
 
 --Funcion que calcula el total de ventas por sector en un rango de fecha dado
@@ -161,7 +161,7 @@ RETURN
 GO
 
 
-----------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 --Todo lo necesario para la consulta #5
 
 --Funcion que calcula el total de ventas por zona en un rango de fecha dado
@@ -192,7 +192,7 @@ RETURN
 )
 GO
 
------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------
 --Todo lo necesario para la consulta #7
 
 --Funcion que calcula el total de ventas por departamento en un rango de fecha dado
@@ -273,25 +273,16 @@ go
 ----------------------------------------------------------------------
 --Todo lo necesario para la consulta #11
 
---Funcion para calcular la cantidad de contactos por usuario
-create function CantidadContactosUsuario(@cedula VARCHAR(20))
-returns int
-as
-begin
-	declare @result int;
-	select @result = count(contacto.asesor) 
-	from usuario 
-	Join contacto on usuario.cedula = contacto.asesor
-	where @cedula = contacto.asesor
-	return @result
-end
+
+
+Create VIEW ContactosXusuario
+AS
+select usuario.nombre, count(contacto.asesor) as contactos
+from usuario
+Join contacto on usuario.cedula = contacto.asesor
+group by  usuario.nombre
 go
 
-CREATE VIEW ContactosXusuario
-AS
-select nombre + ' ' + apellido1 + ' ' +apellido2 as Nombre  ,dbo.CantidadContactosUsuario(cedula) as [Cantidad de contactos] 
-from usuario
-go
 
 
 ----------------------------------------------------------------------
@@ -321,8 +312,24 @@ RETURN
 	order by dbo.VentaVendedor(cedula,@fechaini, @fechafin )
 )
 GO
+----------------------------------------------------------------------
+--Todo lo necesario para la consulta #14
 
--------------------------------------------------------------------
+GO
+CREATE function casosEstado(@fechaini date, @fechafin date)
+returns table
+as
+RETURN
+(
+	select estadoCaso.estado, COUNT(casos.estado) as casos
+	from estadoCaso
+	join casos on estadoCaso.id = casos.estado
+	where fechaCreacion between @fechaini and @fechafin
+	group by estadoCaso.estado
+)
+GO
+
+----------------------------------------------------------------------
 --Todo lo necesario para la consulta #15
 
 create function totalActividades(@cot VARCHAR(20), @fechaini date,@fechafin date)
@@ -365,7 +372,6 @@ RETURN
 
 )
 GO
--------------------------------------------------------------------
 
 --Todo lo necesario para la consulta #16
 
@@ -391,7 +397,8 @@ go
 
 select * from clientesXzona
 
--------------------------------------------------------------------
+
+----------------------------------------------------------------------
 
 --Todo lo necesario para la consulta #17
 
@@ -420,8 +427,24 @@ GO
 
 select * from dbo.cotPorTipo('2022-11-10', '2022-11-20')
 
+----------------------------------------------------------------------
+--Todo lo necesario para la consulta #20
 
--------------------------------------------------------------------
+GO
+CREATE function casosTipo(@fechaini date, @fechafin date)
+returns table
+as
+RETURN
+(
+	select tipo, COUNT(casos.tipoCaso) as casos
+	from tipoCaso
+	join casos on tipoCaso.id = casos.tipoCaso
+	where fechaCreacion between @fechaini and @fechafin
+	group by tipo
+)
+GO
+
+----------------------------------------------------------------------
 --Todo lo necesario para la consulta #18
 
 --Funcion que devuelve top 10 de tareas con diferencia de dias
@@ -440,12 +463,12 @@ GO
 
 select * from dbo.diferenciaDias('2022-11-11', '2022-11-15')
 
--------------------------------------------------------
+----------------------------------------------------------------------
 --Todo lo necesario para la consulta #20
 
 --Funcion para las tareas mas antiguas sin cerrar
 
-
+GO
 create function tareasAbiertas(@fechaini date, @fechafin date)
 returns table
 as
