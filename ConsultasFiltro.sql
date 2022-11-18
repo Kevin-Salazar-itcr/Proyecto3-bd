@@ -191,6 +191,14 @@ RETURN
 	where  dbo.VentaZona(id,@fechaini, @fechafin )>0
 )
 GO
+--------------------------------------------------------------------------
+--Todo lo necesario para la consulta #6
+--Cotizaciones y ventas por departamento, comparativo.
+
+
+
+
+
 
 --------------------------------------------------------------------------
 --Todo lo necesario para la consulta #7
@@ -312,6 +320,32 @@ RETURN
 	order by dbo.VentaVendedor(cedula,@fechaini, @fechafin )
 )
 GO
+
+----------------------------------------------------------------------
+--Todo lo necesario para la consulta #13
+-- Cantidad de ejecuciones con cierre por mes, por año
+-- (ejecuciones que cierran en una fecha determinada)
+
+CREATE function cierreEjecucionesXmesAnio (@mes int, @anio int)
+returns table
+as
+RETURN
+(
+	select YEAR(ejecucion.fecha_cierra) as año, MONTH(ejecucion.fecha_cierra) as mes, COUNT(*) as ejecuciones 
+	from ejecucion
+	where MONTH(ejecucion.fecha_cierra) = @anio and YEAR(ejecucion.fecha_cierra) = @mes
+	group by fecha_cierra
+)
+GO
+
+create view consultaCierreEjecuciones
+as
+	select * from cierreEjecucionesXmesAnio(10, 2022)
+go
+
+select * from consultaCierreEjecuciones
+
+
 ----------------------------------------------------------------------
 --Todo lo necesario para la consulta #14
 
