@@ -38,6 +38,17 @@ RETURN
 )
 go
 
+create view VistaVentaFamilia
+AS
+    SELECT familia_producto.nombre, sum(productosXcotizacion.precioNegociado * productosXcotizacion.cantidad) as Venta
+	from cotizaciones 
+	Join productosXcotizacion on cotizaciones.numeroCotizacion = productosXcotizacion.numero_cotizacion
+	join producto on productosXcotizacion.codigo_producto = producto.codigo
+	join familia_producto on producto.codigo_familia = familia_producto.codigo
+	where cotizaciones.probabilidad = 4
+	group by  familia_producto.nombre
+go
+
 --------------------------------------------------------------------------
 
 --Todo lo necesario para la consulta #2
@@ -85,8 +96,17 @@ RETURN
 )
 GO
 
-select * from cotizaciones
-select * from dbo.TotalVentaProducto('2022-11-11', '2022-11-12')
+Create VIEW TopProductosVendidos
+AS
+	select TOP 10 nombre, 
+	sum(productosXcotizacion.precioNegociado * productosXcotizacion.cantidad)  AS monto
+	from cotizaciones 
+	JOIN productosXcotizacion on cotizaciones.numeroCotizacion = productosXcotizacion.numero_cotizacion
+	join producto on productosXcotizacion.codigo_producto = producto.codigo
+	where probabilidad = 4
+	group by nombre
+	order by  count(codigo_producto) desc
+
 --------------------------------------------------------------------------
 
 --Todo lo necesario para la consulta #3
@@ -129,11 +149,24 @@ RETURN
 	order bY  dbo.CotProducto(codigo,@fechaini, @fechafin ) desc
 )
 GO
+
+go
+Create VIEW TopProductosCotizados
+AS
+	select TOP 10 nombre, 
+	sum(productosXcotizacion.cantidad)  AS Cantidad
+	from cotizaciones 
+	JOIN productosXcotizacion on cotizaciones.numeroCotizacion = productosXcotizacion.numero_cotizacion
+	join producto on productosXcotizacion.codigo_producto = producto.codigo
+	group by nombre
+	order by  count(codigo_producto) desc
+
+
 --------------------------------------------------------------------------
 --Todo lo necesario para la consulta #4
 
 --Funcion que calcula el total de ventas por sector en un rango de fecha dado
-
+go
 create function VentSector(@id smallint, @fechaini date, @fechafin date)
 returns decimal(9,2)
 as
@@ -159,6 +192,20 @@ RETURN
 	where  dbo.VentSector(id,@fechaini, @fechafin )>0
 )
 GO
+
+
+CREATE VIEW VistaVentaSector
+AS
+
+	select  sector.sector,  sum(productosXcotizacion.precioNegociado * productosXcotizacion.cantidad) as venta
+	from cotizaciones 
+	Join productosXcotizacion on cotizaciones.numeroCotizacion = productosXcotizacion.numero_cotizacion
+	join sector ON cotizaciones.sector = sector.id
+	where cotizaciones.probabilidad = 4 
+	Group by sector.sector
+go
+
+
 
 
 --------------------------------------------------------------------------
@@ -191,14 +238,17 @@ RETURN
 	where  dbo.VentaZona(id,@fechaini, @fechafin )>0
 )
 GO
---------------------------------------------------------------------------
---Todo lo necesario para la consulta #6
---Cotizaciones y ventas por departamento, comparativo.
 
 
-
-
-
+CREATE VIEW VistaVentaZona
+AS
+	select  zona.zona,  sum(productosXcotizacion.precioNegociado * productosXcotizacion.cantidad) as venta
+	from cotizaciones 
+	Join productosXcotizacion on cotizaciones.numeroCotizacion = productosXcotizacion.numero_cotizacion
+	join zona ON cotizaciones.sector = zona.id
+	where cotizaciones.probabilidad = 4 
+	Group by zona.zona
+GO
 
 --------------------------------------------------------------------------
 --Todo lo necesario para la consulta #7
@@ -232,6 +282,16 @@ RETURN
 )
 GO
 
+Create view VistaVentasDepartamento
+as
+	select departamento.nombre,  sum(productosXcotizacion.precioNegociado * productosXcotizacion.cantidad) AS venta
+	from cotizaciones 
+	Join productosXcotizacion on cotizaciones.numeroCotizacion = productosXcotizacion.numero_cotizacion
+	join usuario on cotizaciones.asesor = usuario.cedula
+	join departamento on usuario.departamento = departamento.id
+	where cotizaciones.probabilidad = 4 
+	group by departamento.nombre
+GO
 ----------------------------------------------------------------------
 
 --Todo lo necesario para la consulta #10
@@ -265,15 +325,13 @@ RETURN
 )
 GO
 
-select * from dbo.TotalVentaClientes('2022-11-10', '2022-11-10')
 
---view 
 go
 CREATE view topVentasClientes
 as
-select top 10 cliente.nombre_cuenta , dbo.totalDeLaVenta(nombre_cuenta) as [Venta total]
+select top 10 cliente.nombre_cuenta , dbo.totalDeLaVenta(nombre_cuenta) as [Venta]
 from cliente
-order by [Venta total] DESC
+order by [Venta] DESC
 go
 
 
@@ -321,29 +379,16 @@ RETURN
 )
 GO
 
-----------------------------------------------------------------------
---Todo lo necesario para la consulta #13
--- Cantidad de ejecuciones con cierre por mes, por año
--- (ejecuciones que cierran en una fecha determinada)
-
-CREATE function cierreEjecucionesXmesAnio (@mes int, @anio int)
-returns table
+CREATE view topVentasVendedor
 as
-RETURN
-(
-	select YEAR(ejecucion.fecha_cierra) as año, MONTH(ejecucion.fecha_cierra) as mes, COUNT(*) as ejecuciones 
-	from ejecucion
-	where MONTH(ejecucion.fecha_cierra) = @anio and YEAR(ejecucion.fecha_cierra) = @mes
-	group by fecha_cierra
-)
-GO
-
-create view consultaCierreEjecuciones
-as
-	select * from cierreEjecucionesXmesAnio(10, 2022)
+select top 10 nombre , sum(productosXcotizacion.precioNegociado * productosXcotizacion.cantidad) as [Venta]
+from cotizaciones
+join usuario on cotizaciones.asesor = usuario.cedula
+join productosXcotizacion on cotizaciones.numeroCotizacion = productosXcotizacion.numero_cotizacion
+where cotizaciones.probabilidad = 4
+group by nombre
+order by [Venta] DESC
 go
-
-select * from consultaCierreEjecuciones
 
 
 ----------------------------------------------------------------------
@@ -362,6 +407,15 @@ RETURN
 	group by estadoCaso.estado
 )
 GO
+
+create view vistaCasosEstado
+as
+	select estadoCaso.estado, COUNT(casos.estado) as casos
+	from estadoCaso
+	join casos on estadoCaso.id = casos.estado
+	group by estadoCaso.estado
+go
+
 
 ----------------------------------------------------------------------
 --Todo lo necesario para la consulta #15
@@ -393,7 +447,7 @@ begin
 end
 go
 
-CREATE function CotizacionesTiempoDiferencia(@fechaini date, @fechafin date)
+CREATE function CotizacionesTotalTareas(@fechaini date, @fechafin date)
 returns table
 as
 RETURN
@@ -407,9 +461,24 @@ RETURN
 )
 GO
 
+
+create view VistaTareasActividadesCot
+as
+
+select top 10 numeroCotizacion, COUNT(tareaXcotizacion.numero_cotizacion) + count(actividadXcotizacion.numero_cotizacion) as Total
+from cotizaciones
+join tareaXcotizacion ON cotizaciones.numeroCotizacion = tareaXcotizacion.numero_cotizacion
+JOIN actividadXcotizacion ON cotizaciones.numeroCotizacion = actividadXcotizacion.numero_cotizacion
+group by numeroCotizacion
+order by Total desc 
+
+
+
+
 --Todo lo necesario para la consulta #16
 
 --Funcion para obtener el monto de ventas por zona
+GO
 create function montoXzona(@zona smallint)
 returns table
 as
@@ -435,7 +504,7 @@ select * from clientesXzona
 ----------------------------------------------------------------------
 
 --Todo lo necesario para la consulta #17
-
+GO
 create function CantCotTipo(@id smallint, @fechaini date, @fechafin date)
 returns int
 as
@@ -455,28 +524,17 @@ RETURN
 (
 	SELECT tipo, dbo.CantCotTipo(id, @fechaini, @fechafin) as [cantidad]
 	FROM tipoCotizacion
-	
 )
 GO
 
-select * from dbo.cotPorTipo('2022-11-10', '2022-11-20')
 
-----------------------------------------------------------------------
---Todo lo necesario para la consulta #20
-
-GO
-CREATE function casosTipo(@fechaini date, @fechafin date)
-returns table
+create view VistasCotTipo
 as
-RETURN
-(
-	select tipo, COUNT(casos.tipoCaso) as casos
-	from tipoCaso
-	join casos on tipoCaso.id = casos.tipoCaso
-	where fechaCreacion between @fechaini and @fechafin
-	group by tipo
-)
-GO
+select  tipoCotizacion.tipo, count(cotizaciones.tipo) as total
+from tipoCotizacion
+join cotizaciones on tipoCotizacion.id = cotizaciones.tipo
+group by tipoCotizacion.tipo
+go
 
 ----------------------------------------------------------------------
 --Todo lo necesario para la consulta #18
@@ -495,7 +553,42 @@ RETURN
 )
 GO
 
-select * from dbo.diferenciaDias('2022-11-11', '2022-11-15')
+create view DiferenciaDiasCot
+as
+select top 10 numeroCotizacion, nombreOportunidad, nombreCuenta, DATEDIFF(DAY, fechaCotizacion, fechaCierra) as [Días de diferencía]
+from cotizaciones 
+join cliente on cotizaciones.nombreCuenta = cliente.nombre_cuenta
+order by [Días de diferencía] DESC
+go
+
+
+
+----------------------------------------------------------------------
+--Todo lo necesario para la consulta #19
+
+GO
+CREATE function casosTipo(@fechaini date, @fechafin date)
+returns table
+as
+RETURN
+(
+	select tipo, COUNT(casos.tipoCaso) as casos
+	from tipoCaso
+	join casos on tipoCaso.id = casos.tipoCaso
+	where fechaCreacion between @fechaini and @fechafin
+	group by tipo
+)
+GO
+
+CREATE VIEW VistaCasosTipo
+as
+	select tipo, COUNT(casos.tipoCaso) as casos
+	from tipoCaso
+	join casos on tipoCaso.id = casos.tipoCaso
+	group by tipo
+GO
+
+
 
 ----------------------------------------------------------------------
 --Todo lo necesario para la consulta #20
@@ -514,6 +607,18 @@ RETURN
 	order by fechaCreacion 
 )
 GO
+
+
+
+go
+Create view tareasSinCerrar
+as
+select top 15 fechaCreacion, informacion, usuario.nombre + ' '+ usuario.apellido1 + ' ' + usuario.apellido2 AS Nombre
+from tarea 
+join usuario ON tarea.asesor = usuario.cedula
+where tarea.estado = 1
+order by fechaCreacion 
+go
 
 select * from dbo.tareasAbiertas('2022-10-1', '2022-11-15')
 
