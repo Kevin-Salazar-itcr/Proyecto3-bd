@@ -292,6 +292,25 @@ as
 	where cotizaciones.probabilidad = 4 
 	group by departamento.nombre
 GO
+
+--------------------------------------------------------------------------
+--Todo lo necesario para la consulta #8
+
+--Ventas y cotizaciones por mes, año (barras)
+
+create function cotizacionesXfecha(@mes int, @anio int)
+returns table 
+as
+RETURN(
+	select c.numeroCotizacion as Venta, pc.precioNegociado* pc.cantidad as Total, pc.cantidad as productosVendidos, c.asesor, c.fechaCotizacion as fechaCotizacion from cotizaciones c, productosXcotizacion pc
+	where MONTH(c.fechaCotizacion) = @mes and YEAR(c.fechaCotizacion) = @anio and c.numeroCotizacion = pc.numero_cotizacion
+	
+)
+GO
+
+select * from cotizacionesXfecha(11, 2022)
+
+
 ----------------------------------------------------------------------
 
 --Todo lo necesario para la consulta #10
