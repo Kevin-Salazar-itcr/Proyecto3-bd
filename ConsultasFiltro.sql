@@ -251,6 +251,24 @@ AS
 GO
 
 --------------------------------------------------------------------------
+--Todo lo necesario para la consulta #6
+
+--Cotizaciones y ventas x depto
+drop function ventasXdepto
+create function ventasXdepto(@id smallint)
+returns table
+as
+RETURN
+(
+	select (select usuario.departamento from usuario where usuario.cedula = c.asesor) as departamento,c.numeroCotizacion as Venta, pc.precioNegociado* pc.cantidad as Total, pc.cantidad as productosVendidos, c.asesor, c.fechaCotizacion as fechaCotizacion from cotizaciones c, productosXcotizacion pc
+	where c.numeroCotizacion = pc.numero_cotizacion and (select usuario.departamento from usuario where usuario.cedula = c.asesor) = @id
+)
+go
+
+select * from ventasXdepto(1)
+
+
+--------------------------------------------------------------------------
 --Todo lo necesario para la consulta #7
 
 --Funcion que calcula el total de ventas por departamento en un rango de fecha dado
