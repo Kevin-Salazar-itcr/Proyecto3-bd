@@ -328,6 +328,27 @@ GO
 
 select * from cotizacionesXfecha(11, 2022)
 
+----------------------------------------------------------------------
+--Todo lo necesario para la consulta #9
+--ventas y cotizaciones por mes, por año, en valor presente
+
+--drop function consultaTVP
+create function consultaTVP(@mes int, @anio int)
+returns table
+as
+RETURN(
+	select c.numeroCotizacion as cotizacion, tvp.nombreOportunidad as oportunidad, tvp.nombreCuenta as cuentaAsociada, tvp.totalCotizacion, tvp.totalValorPresente 
+	from ValorPresenteCotizaciones tvp, cotizaciones c
+	where MONTH(c.fechaCotizacion) = @mes 
+	and YEAR(c.fechaCotizacion) = @anio 
+	and c.numeroCotizacion = tvp.idCotizacion
+)
+go
+
+create view VentaCotizacionesTVP
+as
+select * from consultaTVP(11,2022)
+go
 
 ----------------------------------------------------------------------
 
