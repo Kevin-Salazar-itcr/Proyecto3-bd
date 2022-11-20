@@ -250,11 +250,11 @@ AS
 	Group by zona.zona
 GO
 
+
 --------------------------------------------------------------------------
 --Todo lo necesario para la consulta #6
-
 --Cotizaciones y ventas x depto
-drop function ventasXdepto
+go
 create function ventasXdepto(@id smallint)
 returns table
 as
@@ -264,15 +264,12 @@ RETURN
 	where c.numeroCotizacion = pc.numero_cotizacion and (select usuario.departamento from usuario where usuario.cedula = c.asesor) = @id
 )
 go
-
 select * from ventasXdepto(1)
-
-
 --------------------------------------------------------------------------
 --Todo lo necesario para la consulta #7
 
 --Funcion que calcula el total de ventas por departamento en un rango de fecha dado
-
+go
 create function VentaDepartamento(@id smallint, @fechaini date, @fechafin date)
 returns decimal(9,2)
 as
@@ -313,9 +310,7 @@ GO
 
 --------------------------------------------------------------------------
 --Todo lo necesario para la consulta #8
-
 --Ventas y cotizaciones por mes, año (barras)
-
 create function cotizacionesXfecha(@mes int, @anio int)
 returns table 
 as
@@ -333,6 +328,7 @@ select * from cotizacionesXfecha(11, 2022)
 --ventas y cotizaciones por mes, por año, en valor presente
 
 --drop function consultaTVP
+GO
 create function consultaTVP(@mes int, @anio int)
 returns table
 as
@@ -349,7 +345,6 @@ create view VentaCotizacionesTVP
 as
 select * from consultaTVP(11,2022)
 go
-
 ----------------------------------------------------------------------
 
 --Todo lo necesario para la consulta #10
