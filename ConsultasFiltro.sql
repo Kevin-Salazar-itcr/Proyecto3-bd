@@ -1,4 +1,4 @@
-use CRM
+ï»¿use CRM
 go
 
 --Todo lo necesario para la consulta #1
@@ -253,18 +253,32 @@ GO
 
 --------------------------------------------------------------------------
 --Todo lo necesario para la consulta #6
---Cotizaciones y ventas x depto
+--Cotizaciones y ventas x depto (comparativo)
 go
+
+-- @id = id del departamento
 create function ventasXdepto(@id smallint)
 returns table
 as
 RETURN
 (
-	select (select usuario.departamento from usuario where usuario.cedula = c.asesor) as departamento,c.numeroCotizacion as Venta, pc.precioNegociado* pc.cantidad as Total, pc.cantidad as productosVendidos, c.asesor, c.fechaCotizacion as fechaCotizacion from cotizaciones c, productosXcotizacion pc
+	select (select usuario.departamento from usuario where usuario.cedula = c.asesor) as departamento,c.numeroCotizacion as Venta, pc.precioNegociado* pc.cantidad as Total, pc.cantidad as productosVendidos, c.asesor, c.fechaCotizacion as fechaCotizacion 
+	from cotizaciones c, productosXcotizacion pc
 	where c.numeroCotizacion = pc.numero_cotizacion and (select usuario.departamento from usuario where usuario.cedula = c.asesor) = @id
 )
 go
-select * from ventasXdepto(1)
+
+
+create view VistaVentasCotXdepto
+as
+	select departamento.nombre, numeroCotizacion, sum(productosXcotizacion.precioNegociado * productosXcotizacion.cantidad) AS venta
+	from cotizaciones 
+	Join productosXcotizacion on cotizaciones.numeroCotizacion = productosXcotizacion.numero_cotizacion
+	join usuario on cotizaciones.asesor = usuario.cedula
+	join departamento on usuario.departamento = departamento.id
+	where cotizaciones.probabilidad = 4 
+	group by departamento.nombre, numeroCotizacion
+go
 --------------------------------------------------------------------------
 --Todo lo necesario para la consulta #7
 
@@ -310,7 +324,7 @@ GO
 
 --------------------------------------------------------------------------
 --Todo lo necesario para la consulta #8
---Ventas y cotizaciones por mes, año (barras)
+--Ventas y cotizaciones por mes, aÃ±o (barras)
 create function cotizacionesXfecha(@mes int, @anio int)
 returns table 
 as
@@ -321,11 +335,10 @@ RETURN(
 )
 GO
 
-select * from cotizacionesXfecha(11, 2022)
 
 ----------------------------------------------------------------------
 --Todo lo necesario para la consulta #9
---ventas y cotizaciones por mes, por año, en valor presente
+--ventas y cotizaciones por mes, por aÃ±o, en valor presente
 
 --drop function consultaTVP
 GO
@@ -343,7 +356,8 @@ go
 
 create view VentaCotizacionesTVP
 as
-select * from consultaTVP(11,2022)
+	select  vpc.nombreOportunidad
+	from ValorPresenteCotizaciones vpc
 go
 ----------------------------------------------------------------------
 
@@ -445,6 +459,33 @@ go
 
 
 ----------------------------------------------------------------------
+--Todo lo necesario para la consulta #13
+-- Cantidad de ejecuciones con cierre por mes, por aï¿½o
+-- (ejecuciones que cierran en una fecha determinada)
+
+CREATE function cierreEjecucionesXmesAnio (@mes int, @anio int)
+returns table
+as
+RETURN
+(
+	select YEAR(ejecucion.fecha_cierra) as anio, MONTH(ejecucion.fecha_cierra) as mes, COUNT(*) as ejecuciones 
+	from ejecucion
+	where MONTH(ejecucion.fecha_cierra) = @anio and YEAR(ejecucion.fecha_cierra) = @mes
+	group by fecha_cierra
+)
+GO
+create view consultaCierreEjecuciones
+as
+	select e.IDejecucion, e.nombre,e.numero_cotizacion
+	from ejecucion e
+	
+	where (SELECT CONVERT (date, GETDATE())) <= e.fecha_cierra
+	group by e.IDejecucion, e.nombre, e.numero_cotizacion
+	order by e.IDejecucion desc
+go
+
+
+----------------------------------------------------------------------
 --Todo lo necesario para la consulta #14
 
 GO
@@ -468,7 +509,6 @@ as
 	join casos on estadoCaso.id = casos.estado
 	group by estadoCaso.estado
 go
-
 
 ----------------------------------------------------------------------
 --Todo lo necesario para la consulta #15
@@ -598,20 +638,20 @@ returns table
 as
 RETURN
 (
-	select top 10 numeroCotizacion, nombreOportunidad, nombreCuenta, DATEDIFF(DAY, fechaCotizacion, fechaCierra) as [Días de diferencía]
+	select top 10 numeroCotizacion, nombreOportunidad, nombreCuenta, DATEDIFF(DAY, fechaCotizacion, fechaCierra) as [DÃ­as de diferencÃ­a]
 	from cotizaciones 
 	join cliente on cotizaciones.nombreCuenta = cliente.nombre_cuenta
 	where fechaCotizacion between @fechaini and @fechafin
-	order by [Días de diferencía] DESC
+	order by [DÃ­as de diferencÃ­a] DESC
 )
 GO
 
 create view DiferenciaDiasCot
 as
-select top 10 numeroCotizacion, nombreOportunidad, nombreCuenta, DATEDIFF(DAY, fechaCotizacion, fechaCierra) as [Días de diferencía]
+select top 10 numeroCotizacion, nombreOportunidad, nombreCuenta, DATEDIFF(DAY, fechaCotizacion, fechaCierra) as [DÃ­as de diferencÃ­a]
 from cotizaciones 
 join cliente on cotizaciones.nombreCuenta = cliente.nombre_cuenta
-order by [Días de diferencía] DESC
+order by [DÃ­as de diferencÃ­a] DESC
 go
 
 
