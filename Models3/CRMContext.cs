@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ProyectoCRM.Models3
@@ -57,6 +58,7 @@ namespace ProyectoCRM.Models3
         public virtual DbSet<VistaTareasActividadesCot> VistaTareasActividadesCots { get; set; } = null!;
         public virtual DbSet<VistaVentaFamilium> VistaVentaFamilia { get; set; } = null!;
         public virtual DbSet<VistaVentaSector> VistaVentaSectors { get; set; } = null!;
+        
         public virtual DbSet<VistaVentaZona> VistaVentaZonas { get; set; } = null!;
         public virtual DbSet<VistaVentasDepartamento> VistaVentasDepartamentos { get; set; } = null!;
         public virtual DbSet<VistasCotTipo> VistasCotTipos { get; set; } = null!;
@@ -294,7 +296,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<ConsultaCierreEjecucione>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Ejecuciones);
 
                 entity.ToView("consultaCierreEjecuciones");
 
@@ -672,7 +674,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<DiferEnciaDiasCot>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.NumeroCotizacion);
 
                 entity.ToView("DiferEnciaDiasCot");
 
@@ -1097,7 +1099,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<TareasSinCerrar>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Nombre);
 
                 entity.ToView("tareasSinCerrar");
 
@@ -1165,7 +1167,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<TopProductosCotizado>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Nombre);
 
                 entity.ToView("TopProductosCotizados");
 
@@ -1188,7 +1190,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<TopProductosVendido>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Nombre);
 
                 entity.ToView("TopProductosVendidos");
 
@@ -1207,7 +1209,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<TopVentasCliente>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.NombreCuenta);
 
                 entity.ToView("topVentasClientes");
 
@@ -1223,7 +1225,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<TopVentasVendedor>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Vendedor);
 
                 entity.ToView("topVentasVendedor");
 
@@ -1238,7 +1240,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<TotalTareasYactividade>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.NombreOportunidad);
 
                 entity.ToView("TotalTareasYactividades");
 
@@ -1357,7 +1359,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<VentaCotizacionesTvp>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Cotizacion);
 
                 entity.ToView("VentaCotizacionesTVP");
 
@@ -1387,7 +1389,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<VistaTareasActividadesCot>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.NumeroCotizacion);
 
                 entity.ToView("VistaTareasActividadesCot");
 
@@ -1399,7 +1401,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<VistaVentaFamilium>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Nombre);
 
                 entity.ToView("VistaVentaFamilia");
 
@@ -1413,7 +1415,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<VistaVentaSector>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Sector);
 
                 entity.ToView("VistaVentaSector");
 
@@ -1429,7 +1431,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<VistaVentaZona>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Zona);
 
                 entity.ToView("VistaVentaZona");
 
@@ -1445,7 +1447,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<VistaVentasDepartamento>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Nombre);
 
                 entity.ToView("VistaVentasDepartamento");
 
@@ -1461,7 +1463,7 @@ namespace ProyectoCRM.Models3
 
             modelBuilder.Entity<VistasCotTipo>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Tipo);
 
                 entity.ToView("VistasCotTipo");
 
