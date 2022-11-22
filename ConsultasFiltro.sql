@@ -356,8 +356,9 @@ go
 
 create view VentaCotizacionesTVP
 as
-	select  vpc.nombreOportunidad
+	select  vpc.idCotizacion, vpc.nombreOportunidad, vpc.totalCotizacion
 	from ValorPresenteCotizaciones vpc
+	order by vpc.totalCotizacion
 go
 ----------------------------------------------------------------------
 
